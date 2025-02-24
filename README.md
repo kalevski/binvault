@@ -69,5 +69,4 @@ For detailed contribution guidelines, see [CONTRIBUTING.md](CONTRIBUTING.md).
 ## 📜 License
 
 BinVault is released under the **Apache 2.0 License**.
----
 
