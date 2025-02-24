@@ -30,6 +30,8 @@ docker run -p 80:80 -p 8080:8080 -v $(pwd)/data:/app/data ghcr.io/kalevski/binva
 
 ## 📌 Usage
 
+🚀 **Start using BinVault today for efficient and optimized file storage!**
+
 | HTTP Method | Endpoint                          | Request Body | Response Body |
 |-------------|-----------------------------------|--------------|---------------|
 | GET         | /api/buckets                      | None         | JSON array of buckets |
@@ -64,17 +66,7 @@ We welcome contributions! Follow these steps:
 For detailed contribution guidelines, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
-
 ## 📜 License
 BinVault is released under the **Apache 2.0 License**.
-
 ---
 
-## 📧 Contact & Community
-- **GitHub Issues**: [Report Bugs](https://github.com/polovni-mk/binvault/issues)
-- **Discussions**: [Join the Community](https://github.com/polovni-mk/binvault/discussions)
-- **Twitter**: [Follow for Updates](https://twitter.com/binvault)
-
----
-
-🚀 **Start using BinVault today for efficient and optimized file storage!**
