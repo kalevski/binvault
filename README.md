@@ -12,7 +12,6 @@
 
 ## 🚀 Features
 
-- **Image Compression**: Supports PNGQuant, MozJPEG, and WebP.
 - **Efficient Storage**: Organizes files in "buckets" with customizable permissions.
 - **Built-in Nginx Server**: Serves compressed files with caching and gzip support.
 - **REST API**: Fully functional API for uploading, retrieving, and managing files.
@@ -23,75 +22,34 @@
 ---
 
 ## 📦 Installation
-
-### **1️⃣ Install via Docker (Recommended)**
 ```sh
-# Clone the repository
-git clone https://github.com/polovni-mk/binvault.git && cd binvault
-
-# Build and run the container
-docker build -t binvault .
-docker run -p 8080:8080 -v $(pwd)/data:/app/data binvault
-```
-
-### **2️⃣ Manual Installation (Go & SQLite)**
-```sh
-# Install dependencies
-sudo apt update && sudo apt install sqlite3
-
-# Install Go Modules
-go mod tidy
-
-# Run the server
-go run main.go
+docker run -p 80:80 -p 8080:8080 -v $(pwd)/data:/app/data ghcr.io/kalevski/binvault:latest
 ```
 
 ---
 
 ## 📌 Usage
 
-### **Upload a File**
-```sh
-curl -X POST -F "file=@image.png" http://localhost:8080/api/upload
-```
-
-### **Retrieve a Compressed File**
-```sh
-curl http://localhost:8080/api/files/image_compressed.png
-```
-
-### **List All Files in a Bucket**
-```sh
-curl http://localhost:8080/api/bucket/default
-```
-
-| HTTP Method | Endpoint         | Description                      | Request Body | Response Body |
-|-------------|------------------|----------------------------------|--------------|---------------|
-| GET         | /api/resource    | Retrieves a list of resources    | None         | JSON array of resources |
-| GET         | /api/resource/:id| Retrieves a specific resource    | None         | JSON object of the resource |
-| POST        | /api/resource    | Creates a new resource           | JSON object  | JSON object of the created resource |
-| PUT         | /api/resource/:id| Updates an existing resource     | JSON object  | JSON object of the updated resource |
-| DELETE      | /api/resource/:id| Deletes a specific resource      | None         | JSON object with deletion status |
-
----
-
-## 🔒 Authentication & Security
-BinVault supports **token-based authentication**. To use it, include an `Authorization` header:
-```sh
-curl -H "Authorization: Bearer YOUR_API_TOKEN" http://localhost:8080/api/files
-```
-
----
+| HTTP Method | Endpoint                          | Request Body | Response Body |
+|-------------|-----------------------------------|--------------|---------------|
+| GET         | /api/buckets                      | None         | JSON array of buckets |
+| GET         | /api/buckets/:name                | None         | JSON object of the bucket |
+| POST        | /api/buckets                      | JSON object  | JSON object of the created bucket |
+| DELETE      | /api/buckets/:name                | None         | JSON object with deletion status |
+| GET         | /api/buckets/:name/files          | None         | JSON array of files |
+| GET         | /api/buckets/:name/files/:id      | None         | JSON object of the file |
+| GET         | /api/buckets/:name/files/:id/content | None         | File content |
+| POST        | /api/buckets/:name/files          | File data    | JSON object of the uploaded file |
+| DELETE      | /api/buckets/:name/files/:id      | None         | JSON object with deletion status |
 
 ## 🛠 Configuration
 BinVault uses environment variables for customization:
 ```sh
-# Port configuration
-PORT=8080
-
-# Compression settings
-PNG_QUALITY=65-80
-JPEG_QUALITY=75
+SERVER_PORT=8080
+SERVER_HOST=localhost
+DATA_PATH=./data
+DB_NAME=_database
+JWKS=
 ```
 
 ---

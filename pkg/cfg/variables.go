@@ -13,25 +13,21 @@ var (
 )
 
 type Variables struct {
-	SERVER_PORT    string
-	SERVER_HOST    string
-	PUBLIC_PATH    string
-	PRIVATE_PATH   string
-	TEMP_PATH      string
-	DB_PATH        string
-	PUBLIC_SSSHKEY string
+	SERVER_PORT string
+	SERVER_HOST string
+	DATA_PATH   string
+	DB_NAME     string
+	JWKS        string
 }
 
 func GetVars() *Variables {
 	once.Do(func() {
 		variables = &Variables{
-			SERVER_PORT:    readEnv("SERVER_PORT", "8080"),
-			SERVER_HOST:    readEnv("SERVER_HOST", "localhost"),
-			PUBLIC_PATH:    readEnv("PUBLIC_PATH", "./data/public"),
-			PRIVATE_PATH:   readEnv("PRIVATE_PATH", "./data/private"),
-			TEMP_PATH:      readEnv("TEMP_PATH", "./data/temp"),
-			DB_PATH:        readEnv("DB_PATH", "./data/_database"),
-			PUBLIC_SSSHKEY: readEnv("PUBLIC_SSSHKEY", ""),
+			SERVER_PORT: readEnv("SERVER_PORT", "8080"),
+			SERVER_HOST: readEnv("SERVER_HOST", "localhost"),
+			DATA_PATH:   readEnv("DATA_PATH", "./data"),
+			DB_NAME:     readEnv("DB_NAME", "_database"),
+			JWKS:        readEnv("JWKS", ""),
 		}
 	})
 	return variables
