@@ -13,21 +13,29 @@ var (
 )
 
 type Variables struct {
-	SERVER_PORT string
-	SERVER_HOST string
-	DATA_PATH   string
-	DB_NAME     string
-	JWKS        string
+	SERVER_PORT    string
+	SERVER_HOST    string
+	DATA_PATH      string
+	DB_NAME        string
+	JWKS_URL       string
+	JWKS_KID       string
+	SSH_PUBKEY     string
+	SSH_KEY        string
+	JWT_PAYLOAD_ID string
 }
 
 func GetVars() *Variables {
 	once.Do(func() {
 		variables = &Variables{
-			SERVER_PORT: readEnv("SERVER_PORT", "8080"),
-			SERVER_HOST: readEnv("SERVER_HOST", "localhost"),
-			DATA_PATH:   readEnv("DATA_PATH", "./data"),
-			DB_NAME:     readEnv("DB_NAME", "_database"),
-			JWKS:        readEnv("JWKS", ""),
+			SERVER_PORT:    readEnv("SERVER_PORT", "8080"),
+			SERVER_HOST:    readEnv("SERVER_HOST", "localhost"),
+			DATA_PATH:      readEnv("DATA_PATH", "./data"),
+			DB_NAME:        readEnv("DB_NAME", "_database"),
+			JWKS_URL:       readEnv("JWKS_URL", ""),
+			JWKS_KID:       readEnv("JWKS_KID", "main"),
+			SSH_PUBKEY:     readEnv("SSH_PUBKEY", ""),
+			SSH_KEY:        readEnv("SSH_KEY", ""),
+			JWT_PAYLOAD_ID: readEnv("JWT_PAYLOAD_ID", "id"),
 		}
 	})
 	return variables
@@ -55,4 +63,8 @@ func readEnv(key string, fallback string) string {
 		value = fallback
 	}
 	return value
+}
+
+func EnvExists(key string) bool {
+	return GetVar(key) != ""
 }

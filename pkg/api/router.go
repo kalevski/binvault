@@ -2,6 +2,8 @@ package api
 
 import (
 	"binvault/pkg/api/handlers"
+	"binvault/pkg/api/helpers"
+	"binvault/pkg/api/middlewares"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -9,8 +11,12 @@ import (
 func initRouter() *httprouter.Router {
 	router := httprouter.New()
 
-	router.GET("/api/buckets", handlers.BucketGetMany)
-	router.POST("/api/buckets", handlers.BucketCreate)
+	routerMiddlewares := []helpers.Middleware{}
+	routerMiddlewares = append(routerMiddlewares, helpers.LoggingMiddleware)
+	routerMiddlewares = append(routerMiddlewares, middlewares.AuthMiddleware)
+
+	router.GET("/api/buckets", helpers.ApplyMiddleware(handlers.BucketGetMany, routerMiddlewares))
+	router.POST("/api/buckets", helpers.ApplyMiddleware(handlers.BucketCreate, routerMiddlewares))
 	router.GET("/api/buckets/:bucketName", handlers.BucketGetOne)
 	router.DELETE("/api/buckets/:bucketName", handlers.BucketDelete)
 

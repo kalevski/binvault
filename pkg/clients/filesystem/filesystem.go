@@ -1,6 +1,7 @@
 package filesystem
 
 import (
+	"binvault/pkg/cfg"
 	"fmt"
 	"log"
 	"os"
@@ -29,8 +30,9 @@ func initQueue(dirPath string) {
 	}
 }
 
-func WatchFolder(dirPath string) {
-	initQueue(dirPath)
+func WatchFolder(name string) {
+	path := filepath.Join(cfg.GetPath("DATA_PATH"), name)
+	initQueue(path)
 	watcher, err := fsnotify.NewWatcher()
 
 	if err != nil {
@@ -38,8 +40,8 @@ func WatchFolder(dirPath string) {
 	}
 
 	defer watcher.Close()
-	log.Default().Println("Watching folder:", dirPath)
-	watcher.Add(dirPath)
+	log.Default().Println("Watching folder:", path)
+	watcher.Add(path)
 
 	for {
 		select {

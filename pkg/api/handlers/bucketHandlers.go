@@ -11,6 +11,7 @@ import (
 
 // GET /buckets
 func BucketGetMany(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	log.Println("BucketGetMany")
 	pagination := helpers.GetRequestPagination(r)
 	buckets := services.BucketGetMany(pagination.Limit, pagination.Offset)
 	log.Println(buckets)
