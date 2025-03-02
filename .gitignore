@@ -15,3 +15,6 @@ binvault
 # Dependency directories
 vendor/
 Godeps/
+
+data/**
+!data/private/.gitkeep

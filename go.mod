@@ -9,6 +9,7 @@ require (
 	github.com/fsnotify/fsnotify v1.8.0 // indirect
 	github.com/goccy/go-json v0.10.5 // indirect
 	github.com/golang-jwt/jwt/v5 v5.2.1 // indirect
+	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/lestrrat-go/backoff/v2 v2.0.8 // indirect
 	github.com/lestrrat-go/blackmagic v1.0.2 // indirect
 	github.com/lestrrat-go/httpcc v1.0.1 // indirect
@@ -16,7 +17,10 @@ require (
 	github.com/lestrrat-go/jwx v1.2.30 // indirect
 	github.com/lestrrat-go/option v1.0.1 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/spf13/cobra v1.9.1 // indirect
+	github.com/spf13/pflag v1.0.6 // indirect
 	golang.org/x/crypto v0.35.0 // indirect
+	gopkg.in/square/go-jose.v2 v2.6.0 // indirect
 )
 
 require (
