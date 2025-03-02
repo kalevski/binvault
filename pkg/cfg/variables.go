@@ -13,29 +13,31 @@ var (
 )
 
 type Variables struct {
-	SERVER_PORT    string
-	SERVER_HOST    string
-	DATA_PATH      string
-	DB_NAME        string
-	JWKS_URL       string
-	JWKS_KID       string
-	SSH_PUBKEY     string
-	SSH_KEY        string
-	JWT_PAYLOAD_ID string
+	SERVER_PORT     string
+	SERVER_HOST     string
+	DATA_PATH       string
+	DB_NAME         string
+	JWKS_URL        string
+	JWKS_KID        string
+	SSH_PUBLIC_KEY  string
+	SSH_PRIVATE_KEY string
+	JWT_PAYLOAD_ID  string
+	PEM_FILENAME    string
 }
 
 func GetVars() *Variables {
 	once.Do(func() {
 		variables = &Variables{
-			SERVER_PORT:    readEnv("SERVER_PORT", "8080"),
-			SERVER_HOST:    readEnv("SERVER_HOST", "localhost"),
-			DATA_PATH:      readEnv("DATA_PATH", "./data"),
-			DB_NAME:        readEnv("DB_NAME", "_database"),
-			JWKS_URL:       readEnv("JWKS_URL", ""),
-			JWKS_KID:       readEnv("JWKS_KID", "main"),
-			SSH_PUBKEY:     readEnv("SSH_PUBKEY", ""),
-			SSH_KEY:        readEnv("SSH_KEY", ""),
-			JWT_PAYLOAD_ID: readEnv("JWT_PAYLOAD_ID", "id"),
+			SERVER_PORT:     readEnv("SERVER_PORT", "8080"),
+			SERVER_HOST:     readEnv("SERVER_HOST", "localhost"),
+			DATA_PATH:       readEnv("DATA_PATH", "./data"),
+			DB_NAME:         readEnv("DB_NAME", "database.db"),
+			JWKS_URL:        readEnv("JWKS_URL", ""),
+			JWKS_KID:        readEnv("JWKS_KID", "main"),
+			SSH_PUBLIC_KEY:  readEnv("SSH_PUBLIC_KEY", ""),
+			SSH_PRIVATE_KEY: readEnv("SSH_PRIVATE_KEY", ""),
+			PEM_FILENAME:    readEnv("PEM_FILENAME", "private.pem"),
+			JWT_PAYLOAD_ID:  readEnv("JWT_PAYLOAD_ID", "id"),
 		}
 	})
 	return variables

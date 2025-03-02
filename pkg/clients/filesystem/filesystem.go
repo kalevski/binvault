@@ -20,12 +20,12 @@ func initQueue(dirPath string) {
 
 	for _, file := range files {
 		if !file.IsDir() {
-			absPath, err := filepath.Abs(file.Name())
+			path := filepath.Join(dirPath, file.Name())
 			if err != nil {
 				log.Println("error getting absolute path:", err)
 				continue
 			}
-			FileQueue <- absPath
+			FileQueue <- path
 		}
 	}
 }
@@ -51,7 +51,6 @@ func WatchFolder(name string) {
 			}
 			if event.Op&fsnotify.Create == fsnotify.Create {
 				filePath := event.Name
-				fmt.Println("New file detected:", filePath)
 				FileQueue <- filePath
 			}
 		case err, ok := <-watcher.Errors:

@@ -16,5 +16,13 @@ binvault
 vendor/
 Godeps/
 
-data/**
-!data/private/.gitkeep
+data/private/**/*
+!data/private/README.md
+
+data/public/**/*
+!data/public/README.md
+
+data/temp/**/*
+
+data/*.db
+data/*.pem
