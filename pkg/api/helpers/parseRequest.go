@@ -1,6 +1,7 @@
 package helpers
 
 import (
+	"binvault/pkg/auth"
 	"net/http"
 	"strconv"
 )
@@ -29,4 +30,26 @@ func GetRequestPagination(r *http.Request) *RequestPagination {
 		offset = 0
 	}
 	return &RequestPagination{limit, offset}
+}
+
+func GetRequestToken(r *http.Request) *string {
+	token := r.Header.Get("Authorization")
+	if token == "" {
+		return nil
+	}
+
+	if len(token) < 7 || token[:7] != "Bearer " {
+		return nil
+	}
+	tokenStr := token[7:]
+	return &tokenStr
+}
+
+func GetUserID(r *http.Request) *map[string]any {
+	token := GetRequestToken(r)
+	if token == nil {
+		return nil
+	}
+	claims := auth.GetClaims(*token)
+	return &claims
 }

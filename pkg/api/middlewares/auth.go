@@ -1,8 +1,8 @@
 package middlewares
 
 import (
+	"binvault/pkg/api/helpers"
 	"binvault/pkg/auth"
-	"log"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
@@ -16,24 +16,18 @@ func AuthMiddleware(next httprouter.Handle) httprouter.Handle {
 			return
 		}
 
-		token := r.Header.Get("Authorization")
-		if token == "" {
-			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		token := helpers.GetRequestToken(r)
+		if token == nil {
+			helpers.ErrorResponse(w, http.StatusUnauthorized, "unauthorized")
 			return
 		}
 
-		if len(token) < 7 || token[:7] != "Bearer " {
-			http.Error(w, "Unauthorized", http.StatusUnauthorized)
-			return
-		}
-		token = token[7:]
-
-		claims, err := auth.ValidateJWT(keys.PublicKey, token)
+		_, err := auth.ValidateJWT(keys.PublicKey, *token)
 		if err != nil {
-			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+			helpers.ErrorResponse(w, http.StatusUnauthorized, "unauthorized")
 			return
 		}
-		log.Println("Claims:", claims)
+
 		next(w, r, ps)
 	}
 }

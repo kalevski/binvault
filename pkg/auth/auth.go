@@ -51,7 +51,7 @@ func GetAuth() *Auth {
 	} else if cfg.EnvExists("SSH_PUBLIC_KEY") {
 		auth.Enabled = true
 		auth.PublicKey = LoadRSAPublicKey()
-	} else {
+	} else if pem != nil {
 		auth.Enabled = true
 		auth.PublicKey = pem.PublicKey
 	}

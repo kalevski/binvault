@@ -21,3 +21,17 @@ func ValidateJWT(key *rsa.PublicKey, token string) (map[string]any, error) {
 
 	return claims, nil
 }
+
+func GetClaims(token string) map[string]any {
+	webToken, err := jwt.ParseSigned(token)
+	if err != nil {
+		return nil
+	}
+
+	claims := make(map[string]any)
+
+	if err := webToken.UnsafeClaimsWithoutVerification(&claims); err != nil {
+		return nil
+	}
+	return claims
+}

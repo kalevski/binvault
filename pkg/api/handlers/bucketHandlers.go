@@ -14,7 +14,6 @@ func BucketGetMany(w http.ResponseWriter, r *http.Request, params httprouter.Par
 	log.Println("BucketGetMany")
 	pagination := helpers.GetRequestPagination(r)
 	buckets := services.BucketGetMany(pagination.Limit, pagination.Offset)
-	log.Println(buckets)
 	helpers.JSONResponse(w, http.StatusOK, buckets)
 }
 
