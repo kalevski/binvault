@@ -1,19 +1,17 @@
 package middlewares
 
 import (
-	"binvault/pkg/cfg"
-	"fmt"
+	"binvault/pkg/auth"
 	"log"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/lestrrat-go/jwx/jwt"
 )
 
 func AuthMiddleware(next httprouter.Handle) httprouter.Handle {
 	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-		auth := cfg.GetAuth()
-		if !auth.Enabled {
+		keys := auth.GetAuth()
+		if !keys.Enabled {
 			next(w, r, ps)
 			return
 		}
@@ -30,15 +28,12 @@ func AuthMiddleware(next httprouter.Handle) httprouter.Handle {
 		}
 		token = token[7:]
 
-		log.Println("token %s", token)
-
-		verifiedToken, err := jwt.ParseRequest(r, jwt.WithKeySet(*auth.Jwk))
+		claims, err := auth.ValidateJWT(keys.PublicKey, token)
 		if err != nil {
-			fmt.Printf("failed to verify token from HTTP request: %s\n", err)
+			http.Error(w, "Unauthorized", http.StatusUnauthorized)
 			return
 		}
-		fmt.Println(verifiedToken)
-
+		log.Println("Claims:", claims)
 		next(w, r, ps)
 	}
 }

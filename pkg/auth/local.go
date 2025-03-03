@@ -5,7 +5,6 @@ import (
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/pem"
-	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -13,21 +12,47 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
-func LoadPEM() (*rsa.PrivateKey, error) {
-	path := filepath.Join(cfg.GetVars().DATA_PATH, cfg.GetVars().PEM_FILENAME)
-	data, err := os.ReadFile(path)
+type PEM struct {
+	PrivateKey *rsa.PrivateKey
+	PublicKey  *rsa.PublicKey
+}
+
+func LoadPEM() *PEM {
+	privatePath := filepath.Join(cfg.GetVars().DATA_PATH, cfg.GetVars().PEM_PRIVATE_FILENAME)
+	publicPath := filepath.Join(cfg.GetVars().DATA_PATH, cfg.GetVars().PEM_PUBLIC_FILENAME)
+
+	privateData, err := os.ReadFile(privatePath)
 	if err != nil {
-		return nil, err
+		return nil
 	}
-	pemBlock, _ := pem.Decode(data)
+
+	publicData, err := os.ReadFile(publicPath)
+	if err != nil {
+		return nil
+	}
+
+	pemBlock, _ := pem.Decode(privateData)
 	if pemBlock == nil {
-		return nil, fmt.Errorf("not valid private PEM key file")
+		return nil
 	}
 	parsedKey, err := x509.ParsePKCS1PrivateKey(pemBlock.Bytes)
 	if err != nil {
-		return nil, err
+		return nil
 	}
-	return parsedKey, nil
+
+	pubPremBlock, _ := pem.Decode(publicData)
+	if pubPremBlock == nil {
+		return nil
+	}
+
+	parsedPubKey, err := x509.ParsePKCS1PublicKey(pubPremBlock.Bytes)
+	if err != nil {
+		return nil
+	}
+	return &PEM{
+		PrivateKey: parsedKey,
+		PublicKey:  parsedPubKey,
+	}
 }
 
 func LoadRSAPublicKey() *rsa.PublicKey {
@@ -51,14 +76,19 @@ func LoadRSAPublicKey() *rsa.PublicKey {
 }
 
 func LoadRSAPrivateKey() *rsa.PrivateKey {
+	if !cfg.EnvExists("SSH_PRIVATE_KEY") {
+		return nil
+	}
+
 	data := cfg.GetVars().SSH_PRIVATE_KEY
 	parsedKey, err := ssh.ParseRawPrivateKey([]byte(data))
 	if err != nil {
-		log.Fatalf("Failed to parse private key: %v", err)
+		return nil
 	}
 	rsaPrivKey, ok := parsedKey.(*rsa.PrivateKey)
 	if !ok {
-		log.Fatalf("Key is not an RSA private key")
+		log.Println("Key is not an RSA private key")
+		return nil
 	}
 	return rsaPrivKey
 }

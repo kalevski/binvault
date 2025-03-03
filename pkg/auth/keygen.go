@@ -11,23 +11,41 @@ import (
 )
 
 func GeneratePEM(path string) error {
-	pemFilename := cfg.GetVar("PEM_FILENAME")
-	file := filepath.Join(path, pemFilename)
-	f, err := os.Create(file)
+	pemPrivate := cfg.GetVars().PEM_PRIVATE_FILENAME
+	pemPublic := cfg.GetVars().PEM_PUBLIC_FILENAME
+
+	filePrivate := filepath.Join(path, pemPrivate)
+	fp, err := os.Create(filePrivate)
 	if err != nil {
 		return err
 	}
-	defer f.Close()
+	defer fp.Close()
+
+	filePublic := filepath.Join(path, pemPublic)
+	fpub, err := os.Create(filePublic)
+	if err != nil {
+		return err
+	}
+	defer fpub.Close()
 
 	key, err := rsa.GenerateKey(rand.Reader, 4096)
 	if err != nil {
 		return err
 	}
 
-	err = pem.Encode(f, &pem.Block{
+	if err = pem.Encode(fp, &pem.Block{
 		Type:  "PRIVATE KEY",
 		Bytes: x509.MarshalPKCS1PrivateKey(key),
-	})
+	}); err != nil {
+		return err
+	}
+
+	if err = pem.Encode(fpub, &pem.Block{
+		Type:  "PUBLIC KEY",
+		Bytes: x509.MarshalPKCS1PublicKey(&key.PublicKey),
+	}); err != nil {
+		return err
+	}
 
 	return err
 }

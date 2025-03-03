@@ -1,11 +1,9 @@
 package jwtgen
 
 import (
-	"crypto/rsa"
-	"crypto/x509"
-	"encoding/pem"
+	"binvault/pkg/auth"
+	"binvault/pkg/cfg"
 	"fmt"
-	"os"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -21,57 +19,60 @@ var JWTGen = &cobra.Command{
 
 var keyFilePath string
 var keyAlgorythm string
-var jwtAudience string
 var claimUserID int64
-var claimUserEmail string
 
 func init() {
 	flags := JWTGen.Flags()
-	flags.StringVar(&keyFilePath, "key-file", ".dev/key.pem", "Path to private key file")
 	flags.StringVar(&keyAlgorythm, "alg", "RS256", "Hash algorithm")
-	flags.StringVar(&jwtAudience, "aud", "webgame-cloud-api-clients", "JWT Audience claim")
-	flags.Int64Var(&claimUserID, "user-id", 0, "Generate JWT for this user")
-	flags.StringVar(&claimUserEmail, "email", "", "JWT user email")
+	flags.Int64Var(&claimUserID, "id", 0, "Generate JWT for this user")
 }
 
 func RunJWTGen(cmd *cobra.Command, args []string) error {
 	if claimUserID == 0 {
-		return fmt.Errorf("plase set user-id")
-	}
-	if claimUserEmail == "" {
-		return fmt.Errorf("plase set user email")
+		return fmt.Errorf("plase set id")
 	}
 
 	return generateAndSignJWT()
 }
 
 func generateAndSignJWT() error {
-	rsaKey, err := LoadKey(keyFilePath)
-	if err != nil {
-		return err
+
+	var privateKey = auth.LoadRSAPrivateKey()
+	pem := auth.LoadPEM()
+
+	if privateKey == nil && pem != nil {
+		privateKey = pem.PrivateKey
 	}
 
-	key := jose.SigningKey{
+	if privateKey == nil && pem == nil {
+		auth.GeneratePEM(cfg.GetVars().DATA_PATH)
+		privateKey = auth.LoadPEM().PrivateKey
+	}
+
+	if privateKey == nil {
+		return fmt.Errorf("failed to load private key")
+	}
+
+	signingKey := jose.SigningKey{
 		Algorithm: jose.SignatureAlgorithm(keyAlgorythm),
-		Key:       rsaKey,
+		Key:       privateKey,
 	}
 
 	opts := &jose.SignerOptions{}
 	opts.WithType("JWT")
 
-	signer, err := jose.NewSigner(key, opts)
+	signer, err := jose.NewSigner(signingKey, opts)
 	if err != nil {
 		return err
 	}
 
 	builder := jwt.Signed(signer).Claims(jwt.Claims{
-		Issuer:   "webgame-cloud-api-dev",
+		Issuer:   "binvault",
 		Subject:  fmt.Sprintf("%d", claimUserID),
-		Audience: []string{jwtAudience},
 		IssuedAt: jwt.NewNumericDate(time.Now()),
 		Expiry:   jwt.NewNumericDate(time.Now().Add(30 * 24 * time.Hour)),
 	}).Claims(map[string]any{
-		"userEmail": claimUserEmail,
+		"id": claimUserID,
 	})
 
 	token, err := builder.CompactSerialize()
@@ -82,24 +83,4 @@ func generateAndSignJWT() error {
 	fmt.Printf("Token: %s\n", token)
 
 	return nil
-}
-
-func LoadKey(keyFilePath string) (*rsa.PrivateKey, error) {
-	keyData, err := os.ReadFile(keyFilePath)
-	if err != nil {
-		return nil, err
-	}
-	pemBlock, _ := pem.Decode(keyData)
-	if pemBlock == nil {
-		return nil, fmt.Errorf("not valid private PEM key file")
-	}
-	parsedKey, err := x509.ParsePKCS8PrivateKey(pemBlock.Bytes)
-	if err != nil {
-		return nil, err
-	}
-	rsaPrivKey, ok := parsedKey.(*rsa.PrivateKey)
-	if !ok {
-		return nil, fmt.Errorf("private key is not *rsa.PrivateKey")
-	}
-	return rsaPrivKey, nil
 }
