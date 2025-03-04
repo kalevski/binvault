@@ -4,11 +4,17 @@ import (
 	"crypto/rsa"
 	"fmt"
 
-	"gopkg.in/square/go-jose.v2/jwt"
+	"github.com/go-jose/go-jose/v4"
+	"github.com/go-jose/go-jose/v4/jwt"
 )
 
+var signatureAlgorithms []jose.SignatureAlgorithm = []jose.SignatureAlgorithm{
+	jose.RS256,
+}
+
 func ValidateJWT(key *rsa.PublicKey, token string) (map[string]any, error) {
-	webToken, err := jwt.ParseSigned(token)
+
+	webToken, err := jwt.ParseSigned(token, signatureAlgorithms)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse JWT: %w", err)
 	}
@@ -23,7 +29,7 @@ func ValidateJWT(key *rsa.PublicKey, token string) (map[string]any, error) {
 }
 
 func GetClaims(token string) map[string]any {
-	webToken, err := jwt.ParseSigned(token)
+	webToken, err := jwt.ParseSigned(token, signatureAlgorithms)
 	if err != nil {
 		return nil
 	}

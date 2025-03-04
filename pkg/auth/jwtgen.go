@@ -3,8 +3,8 @@ package auth
 import (
 	"crypto/rsa"
 
-	"gopkg.in/square/go-jose.v2"
-	"gopkg.in/square/go-jose.v2/jwt"
+	"github.com/go-jose/go-jose/v4"
+	"github.com/go-jose/go-jose/v4/jwt"
 )
 
 func GenerateJWT(rsa *rsa.PrivateKey, claims map[string]any) (string, error) {
@@ -18,7 +18,7 @@ func GenerateJWT(rsa *rsa.PrivateKey, claims map[string]any) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	jwt, err := jwt.Signed(signer).Claims(claims).CompactSerialize()
+	jwt, err := jwt.Signed(signer).Claims(claims).Serialize()
 	if err != nil {
 		return "", err
 	}

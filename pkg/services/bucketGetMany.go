@@ -13,7 +13,7 @@ func BucketGetMany(limit int, offset int) []models.Bucket {
 	for _, entry := range entries {
 		buckets = append(buckets, models.Bucket{
 			Name:       entry.Name,
-			CreatedBy:  &entry.CreatedBy,
+			CreatedBy:  entry.CreatedBy,
 			CreatedAt:  entry.CreatedAt,
 			Visibility: entry.Visibility,
 		})

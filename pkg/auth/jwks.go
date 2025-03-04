@@ -7,7 +7,7 @@ import (
 	"io"
 	"net/http"
 
-	"gopkg.in/square/go-jose.v2"
+	"github.com/go-jose/go-jose/v4"
 )
 
 func LoadRSAPublicKeyFromJWKS(jwksURL, kid string) (*rsa.PublicKey, error) {

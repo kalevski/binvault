@@ -2,6 +2,7 @@ package main
 
 import (
 	"binvault/pkg/api"
+	"binvault/pkg/api/helpers"
 	"binvault/pkg/auth"
 	"binvault/pkg/clients/filesystem"
 	"binvault/pkg/compression"
@@ -13,6 +14,9 @@ import (
 var workers = runtime.NumCPU()
 
 func main() {
+
+	helpers.Init()
+
 	auth := auth.GetAuth()
 	log.Println("Auth enabled", auth.Enabled)
 

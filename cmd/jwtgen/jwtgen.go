@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/go-jose/go-jose/v4"
+	"github.com/go-jose/go-jose/v4/jwt"
 	"github.com/spf13/cobra"
-	"gopkg.in/square/go-jose.v2"
-	"gopkg.in/square/go-jose.v2/jwt"
 )
 
 var JWTGen = &cobra.Command{
@@ -75,7 +75,7 @@ func generateAndSignJWT() error {
 		"id": claimUserID,
 	})
 
-	token, err := builder.CompactSerialize()
+	token, err := builder.Serialize()
 	if err != nil {
 		return err
 	}

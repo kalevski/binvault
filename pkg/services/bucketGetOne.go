@@ -5,14 +5,17 @@ import (
 	"binvault/pkg/models"
 )
 
-func BucketGetOne(bucketName string) models.Bucket {
+func BucketGetOne(bucketName string) (*models.Bucket, error) {
 	db := database.ObtainConnection()
 	var entry database.Bucket
-	db.First(&entry, "name = ?", bucketName)
-	return models.Bucket{
+	tx := db.First(&entry, "name = ?", bucketName)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+	return &models.Bucket{
 		Name:       entry.Name,
-		CreatedBy:  &entry.CreatedBy,
+		CreatedBy:  entry.CreatedBy,
 		CreatedAt:  entry.CreatedAt,
 		Visibility: entry.Visibility,
-	}
+	}, nil
 }

@@ -2,7 +2,11 @@ package helpers
 
 import (
 	"binvault/pkg/auth"
+	"binvault/pkg/cfg"
+	"fmt"
+	"log"
 	"net/http"
+	"reflect"
 	"strconv"
 )
 
@@ -45,11 +49,29 @@ func GetRequestToken(r *http.Request) *string {
 	return &tokenStr
 }
 
-func GetUserID(r *http.Request) *map[string]any {
+var SystemUserID = "SYSTEM_USER"
+
+func GetUserID(r *http.Request) *string {
 	token := GetRequestToken(r)
 	if token == nil {
-		return nil
+		return &SystemUserID
 	}
 	claims := auth.GetClaims(*token)
-	return &claims
+	id, ok := claims[cfg.GetVars().JWT_CLAIM_ID]
+	if !ok {
+		return &SystemUserID
+	}
+
+	idType := reflect.TypeOf(id)
+	if idType.Kind() == reflect.String {
+		return id.(*string)
+	}
+
+	if idType.Kind() == reflect.Float64 {
+		str := fmt.Sprintf("%.0f", id)
+		return &str
+	}
+
+	log.Printf("type [%s] is not handled", idType.Kind())
+	return &SystemUserID
 }
