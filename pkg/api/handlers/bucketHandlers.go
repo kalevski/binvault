@@ -51,5 +51,15 @@ func BucketGetOne(w http.ResponseWriter, r *http.Request, params httprouter.Para
 
 // DELETE /buckets/:bucketName
 func BucketDelete(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
-
+	bucketName := params.ByName("bucketName")
+	err := services.BucketDelete(bucketName)
+	if err != nil {
+		helpers.ErrorResponse(w, http.StatusNotFound, err.Error())
+		return
+	}
+	// schedule task for removing files
+	helpers.JSONResponse(w, http.StatusAccepted, &helpers.OperationResult{
+		Success: true,
+		Message: "bucket deleted successfully",
+	}) //
 }

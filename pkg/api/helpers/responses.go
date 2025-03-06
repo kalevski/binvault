@@ -14,6 +14,11 @@ type JSONResult struct {
 	Error any `json:"error"`
 }
 
+type OperationResult struct {
+	Success bool   `json:"success"`
+	Message string `json:"message"`
+}
+
 func JSONResponse(w http.ResponseWriter, statusCode int, data any) {
 	w.Header().Set("Content-Type", "application/json")
 	var result = JSONResult{
