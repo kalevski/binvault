@@ -20,14 +20,12 @@ func FileGetMany(w http.ResponseWriter, r *http.Request, params httprouter.Param
 func FileCreate(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	bucketName := params.ByName("bucketName")
 
-	// Parse the multipart form
-	err := r.ParseMultipartForm(10 << 20) // 10 MB
+	err := r.ParseMultipartForm(10 << 20)
 	if err != nil {
-		helpers.SendError(w, http.StatusBadRequest, "unable to parse multipart form")
+		helpers.SendError(w, http.StatusBadRequest, "Unable to parse multipart form")
 		return
 	}
 
-	// Get the file from the form
 	file, header, err := r.FormFile("file")
 	if err != nil {
 		helpers.SendError(w, http.StatusBadRequest, "Error retrieving the file")
@@ -35,7 +33,12 @@ func FileCreate(w http.ResponseWriter, r *http.Request, params httprouter.Params
 	}
 	defer file.Close()
 
-	// Call the service to handle the file upload
+	mimetype := header.Header.Get("Content-Type")
+	if !helpers.IsMimeTypeAllowed(mimetype) {
+		helpers.SendError(w, http.StatusBadRequest, "File type is not allowed")
+		return
+	}
+
 	createdFile, err := services.FileCreate(bucketName, *header, file)
 	if err != nil {
 		helpers.SendError(w, http.StatusInternalServerError, err.Error())

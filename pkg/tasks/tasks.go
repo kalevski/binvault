@@ -37,11 +37,11 @@ func Run(workers int) {
 	}
 
 	log.Printf("Starting task workers [%d]", workers)
-	var wg sync.WaitGroup
+	var group sync.WaitGroup
 	for range workers {
-		wg.Add(1)
+		group.Add(1)
 		go func() {
-			defer wg.Done()
+			defer group.Done()
 			for task := range taskQueue {
 				handler, ok := handlers[task.Name]
 				if !ok {

@@ -16,6 +16,7 @@ type Variables struct {
 	SERVER_PORT          string
 	SERVER_HOST          string
 	DATA_PATH            string
+	TEMP_DIR_NAME        string
 	DB_NAME              string
 	JWKS_URL             string
 	JWKS_KID             string
@@ -40,6 +41,7 @@ func GetVars() *Variables {
 			JWT_CLAIM_ID:         readEnv("JWT_CLAIM_ID", "id"),
 			PEM_PRIVATE_FILENAME: readEnv("PEM_PRIVATE_FILENAME", "key.pem"),
 			PEM_PUBLIC_FILENAME:  readEnv("PEM_PUBLIC_FILENAME", "key_pub.pem"),
+			TEMP_DIR_NAME:        readEnv("TEMP_DIR_NAME", "temp"),
 		}
 	})
 	return variables

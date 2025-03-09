@@ -63,3 +63,19 @@ func GetFiles(path string) []string {
 	}
 	return fileList
 }
+
+func SaveFile(path string, content []byte) error {
+	filePath := filepath.Join(cfg.GetPath("DATA_PATH"), path)
+
+	file, err := os.Create(filePath)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	_, err = file.Write(content)
+	if err != nil {
+		return err
+	}
+	return nil
+}

@@ -20,10 +20,10 @@ func initRouter() *httprouter.Router {
 	router.GET("/api/buckets/:bucketName", handlers.BucketGetOne)
 	router.DELETE("/api/buckets/:bucketName", handlers.BucketDelete)
 
-	router.GET("/api/bucket/:bucketName/files", handlers.FileGetMany)
-	router.POST("/api/bucket/:bucketName/files", handlers.FileCreate)
-	router.GET("/api/bucket/:bucketName/files/:fileId", handlers.FileGetOne)
-	router.DELETE("/api/bucket/:bucketName/files/:fileId", handlers.FileDelete)
+	router.GET("/api/buckets/:bucketName/files", handlers.FileGetMany)
+	router.POST("/api/buckets/:bucketName/files", handlers.FileCreate)
+	router.GET("/api/buckets/:bucketName/files/:fileId", handlers.FileGetOne)
+	router.DELETE("/api/buckets/:bucketName/files/:fileId", handlers.FileDelete)
 
 	return router
 }

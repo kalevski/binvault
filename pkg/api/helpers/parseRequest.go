@@ -75,3 +75,17 @@ func GetUserID(r *http.Request) *string {
 	log.Printf("type [%s] is not handled", idType.Kind())
 	return &SystemUserID
 }
+
+var allowedMimeTypes = []string{
+	"image/jpeg",
+	"image/png",
+}
+
+func IsMimeTypeAllowed(mimetype string) bool {
+	for _, allowedType := range allowedMimeTypes {
+		if mimetype == allowedType {
+			return true
+		}
+	}
+	return false
+}
