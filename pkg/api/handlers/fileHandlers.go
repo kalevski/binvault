@@ -13,7 +13,7 @@ func FileGetMany(w http.ResponseWriter, r *http.Request, params httprouter.Param
 	pagination := helpers.GetRequestPagination(r)
 	bucketName := params.ByName("bucketName")
 	files := services.FileGetMany(bucketName, pagination.Limit, pagination.Offset)
-	helpers.JSONResponse(w, http.StatusOK, files)
+	helpers.SendJSON(w, http.StatusOK, files)
 }
 
 // POST /bucket/:bucketName/files
@@ -23,14 +23,14 @@ func FileCreate(w http.ResponseWriter, r *http.Request, params httprouter.Params
 	// Parse the multipart form
 	err := r.ParseMultipartForm(10 << 20) // 10 MB
 	if err != nil {
-		helpers.ErrorResponse(w, http.StatusBadRequest, "unable to parse multipart form")
+		helpers.SendError(w, http.StatusBadRequest, "unable to parse multipart form")
 		return
 	}
 
 	// Get the file from the form
 	file, header, err := r.FormFile("file")
 	if err != nil {
-		helpers.ErrorResponse(w, http.StatusBadRequest, "Error retrieving the file")
+		helpers.SendError(w, http.StatusBadRequest, "Error retrieving the file")
 		return
 	}
 	defer file.Close()
@@ -38,11 +38,11 @@ func FileCreate(w http.ResponseWriter, r *http.Request, params httprouter.Params
 	// Call the service to handle the file upload
 	createdFile, err := services.FileCreate(bucketName, *header, file)
 	if err != nil {
-		helpers.ErrorResponse(w, http.StatusInternalServerError, err.Error())
+		helpers.SendError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	helpers.JSONResponse(w, http.StatusCreated, createdFile)
+	helpers.SendJSON(w, http.StatusCreated, createdFile)
 
 }
 
@@ -52,9 +52,9 @@ func FileGetOne(w http.ResponseWriter, r *http.Request, params httprouter.Params
 	fileId := params.ByName("fileId")
 	file, err := services.FileGetOne(bucketName, fileId)
 	if err != nil {
-		helpers.ErrorResponse(w, http.StatusNotFound, err.Error())
+		helpers.SendError(w, http.StatusNotFound, err.Error())
 	}
-	helpers.JSONResponse(w, http.StatusOK, file)
+	helpers.SendJSON(w, http.StatusOK, file)
 }
 
 // GET /bucket/:bucketName/files/:fileId/content

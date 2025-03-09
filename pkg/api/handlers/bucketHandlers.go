@@ -18,24 +18,24 @@ type BucketCreateInput struct {
 func BucketGetMany(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	pagination := helpers.GetRequestPagination(r)
 	buckets := services.BucketGetMany(pagination.Limit, pagination.Offset)
-	helpers.JSONResponse(w, http.StatusOK, buckets)
+	helpers.SendJSON(w, http.StatusOK, buckets)
 }
 
 // POST /buckets
 func BucketCreate(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	var input BucketCreateInput
 	if err := helpers.DecodeJSONBody(r, &input); err != nil {
-		helpers.ErrorResponse(w, http.StatusBadRequest, err.Error())
+		helpers.SendError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	userId := helpers.GetUserID(r)
 	bucket, err := services.BucketCreate(input.Name, input.Visibility, *userId)
 	if err != nil {
-		helpers.ErrorResponse(w, http.StatusBadRequest, err.Error())
+		helpers.SendError(w, http.StatusBadRequest, err.Error())
 		return
 	}
-	helpers.JSONResponse(w, http.StatusCreated, bucket)
+	helpers.SendJSON(w, http.StatusCreated, bucket)
 }
 
 // GET /buckets/:bucketName
@@ -43,10 +43,10 @@ func BucketGetOne(w http.ResponseWriter, r *http.Request, params httprouter.Para
 	bucketName := params.ByName("bucketName")
 	bucket, err := services.BucketGetOne(bucketName)
 	if err != nil {
-		helpers.ErrorResponse(w, http.StatusNotFound, err.Error())
+		helpers.SendError(w, http.StatusNotFound, err.Error())
 		return
 	}
-	helpers.JSONResponse(w, http.StatusOK, bucket)
+	helpers.SendJSON(w, http.StatusOK, bucket)
 }
 
 // DELETE /buckets/:bucketName
@@ -54,11 +54,11 @@ func BucketDelete(w http.ResponseWriter, r *http.Request, params httprouter.Para
 	bucketName := params.ByName("bucketName")
 	err := services.BucketDelete(bucketName)
 	if err != nil {
-		helpers.ErrorResponse(w, http.StatusNotFound, err.Error())
+		helpers.SendError(w, http.StatusNotFound, err.Error())
 		return
 	}
 	// schedule task for removing files
-	helpers.JSONResponse(w, http.StatusAccepted, &helpers.OperationResult{
+	helpers.SendJSON(w, http.StatusAccepted, &helpers.OperationResult{
 		Success: true,
 		Message: "bucket deleted successfully",
 	}) //

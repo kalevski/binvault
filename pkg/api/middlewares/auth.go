@@ -18,13 +18,13 @@ func AuthMiddleware(next httprouter.Handle) httprouter.Handle {
 
 		token := helpers.GetRequestToken(r)
 		if token == nil {
-			helpers.ErrorResponse(w, http.StatusUnauthorized, "unauthorized")
+			helpers.SendError(w, http.StatusUnauthorized, "unauthorized")
 			return
 		}
 
 		_, err := auth.ValidateJWT(keys.PublicKey, *token)
 		if err != nil {
-			helpers.ErrorResponse(w, http.StatusUnauthorized, "unauthorized")
+			helpers.SendError(w, http.StatusUnauthorized, "unauthorized")
 			return
 		}
 

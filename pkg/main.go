@@ -4,9 +4,9 @@ import (
 	"binvault/pkg/api"
 	"binvault/pkg/api/helpers"
 	"binvault/pkg/auth"
-	"binvault/pkg/clients/filesystem"
 	"binvault/pkg/compression"
 	"binvault/pkg/database"
+	"binvault/pkg/tasks"
 	"log"
 	"runtime"
 )
@@ -20,8 +20,9 @@ func main() {
 	auth := auth.GetAuth()
 	log.Println("Auth enabled", auth.Enabled)
 
-	go filesystem.WatchFolder("temp")
-	go compression.Init(workers)
+	compression.Init()
+
+	tasks.Run(workers)
 
 	database.Init()
 	api.StartServer()

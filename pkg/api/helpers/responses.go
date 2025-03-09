@@ -5,11 +5,11 @@ import (
 	"net/http"
 )
 
-type ResponseError struct {
+type ErrorResult struct {
 	Message string `json:"message"`
 }
 
-type JSONResult struct {
+type JSONResponse struct {
 	Data  any `json:"data"`
 	Error any `json:"error"`
 }
@@ -19,9 +19,9 @@ type OperationResult struct {
 	Message string `json:"message"`
 }
 
-func JSONResponse(w http.ResponseWriter, statusCode int, data any) {
+func SendJSON(w http.ResponseWriter, statusCode int, data any) {
 	w.Header().Set("Content-Type", "application/json")
-	var result = JSONResult{
+	var result = JSONResponse{
 		Data:  data,
 		Error: nil,
 	}
@@ -29,11 +29,11 @@ func JSONResponse(w http.ResponseWriter, statusCode int, data any) {
 	json.NewEncoder(w).Encode(result)
 }
 
-func ErrorResponse(w http.ResponseWriter, statusCode int, message string) {
+func SendError(w http.ResponseWriter, statusCode int, message string) {
 	w.Header().Set("Content-Type", "application/json")
-	var result = JSONResult{
+	var result = JSONResponse{
 		Data:  nil,
-		Error: ResponseError{Message: message},
+		Error: ErrorResult{Message: message},
 	}
 	w.WriteHeader(statusCode)
 	json.NewEncoder(w).Encode(result)

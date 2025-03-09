@@ -10,29 +10,10 @@ import (
 	"github.com/fsnotify/fsnotify"
 )
 
-var FileQueue = make(chan string, 10)
+type FileEventHandler func(path string, action string)
 
-func initQueue(dirPath string) {
-	files, err := os.ReadDir(dirPath)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	for _, file := range files {
-		if !file.IsDir() {
-			path := filepath.Join(dirPath, file.Name())
-			if err != nil {
-				log.Println("error getting absolute path:", err)
-				continue
-			}
-			FileQueue <- path
-		}
-	}
-}
-
-func WatchFolder(name string) {
+func WatchFolder(name string, handler FileEventHandler) {
 	path := filepath.Join(cfg.GetPath("DATA_PATH"), name)
-	initQueue(path)
 	watcher, err := fsnotify.NewWatcher()
 
 	if err != nil {
@@ -51,7 +32,7 @@ func WatchFolder(name string) {
 			}
 			if event.Op&fsnotify.Create == fsnotify.Create {
 				filePath := event.Name
-				FileQueue <- filePath
+				handler(filePath, "create")
 			}
 		case err, ok := <-watcher.Errors:
 			if !ok {
@@ -60,4 +41,25 @@ func WatchFolder(name string) {
 			fmt.Println("Watcher error:", err)
 		}
 	}
+}
+
+func GetFiles(path string) []string {
+	dirPath := filepath.Join(cfg.GetPath("DATA_PATH"), path)
+	files, err := os.ReadDir(dirPath)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var fileList []string
+	for _, file := range files {
+		if !file.IsDir() {
+			path := filepath.Join(dirPath, file.Name())
+			if err != nil {
+				log.Println("error getting absolute path:", err)
+				continue
+			}
+			fileList = append(fileList, path)
+		}
+	}
+	return fileList
 }
