@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"binvault/pkg/cfg"
+	"binvault/pkg/env"
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/x509"
@@ -11,8 +11,8 @@ import (
 )
 
 func GeneratePEM(path string) error {
-	pemPrivate := cfg.GetVars().PEM_PRIVATE_FILENAME
-	pemPublic := cfg.GetVars().PEM_PUBLIC_FILENAME
+	pemPrivate := env.GetVars().PEM_PRIVATE_FILENAME
+	pemPublic := env.GetVars().PEM_PUBLIC_FILENAME
 
 	filePrivate := filepath.Join(path, pemPrivate)
 	fp, err := os.Create(filePrivate)

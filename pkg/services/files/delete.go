@@ -1,4 +1,4 @@
-package services
+package files
 
 func FileDelete() {
 

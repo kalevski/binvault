@@ -3,6 +3,7 @@ package tasks
 import (
 	"log"
 	"sync"
+	"time"
 )
 
 type Task struct {
@@ -30,6 +31,7 @@ func PushTask(task Task) {
 }
 
 func Run(workers int) {
+	time.Sleep(5 * time.Second)
 	for _, initializer := range initializers {
 		for _, task := range initializer() {
 			taskQueue <- task

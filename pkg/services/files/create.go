@@ -1,9 +1,9 @@
-package services
+package files
 
 import (
-	"binvault/pkg/clients/filesystem"
 	"binvault/pkg/database"
 	"binvault/pkg/models"
+	"binvault/pkg/services/filesystem"
 	"binvault/pkg/utils"
 	"crypto/md5"
 	"encoding/hex"

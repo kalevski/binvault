@@ -1,9 +1,9 @@
-package services
+package buckets
 
 import (
-	"binvault/pkg/clients/filesystem"
 	"binvault/pkg/database"
 	"binvault/pkg/models"
+	"binvault/pkg/services/filesystem"
 )
 
 func BucketCreate(name string, visibility models.Visibility, createdBy string) (*models.Bucket, error) {
@@ -22,7 +22,9 @@ func BucketCreate(name string, visibility models.Visibility, createdBy string) (
 		CreatedBy:  bucket.CreatedBy,
 		CreatedAt:  bucket.CreatedAt,
 	}
-	filesystem.CreateFolder(filesystem.GetFolderPath(filesystem.FOLDER_BUCKETS), entry.Name)
+	bucketsPath := filesystem.GetFolderPath(filesystem.FOLDER_BUCKETS)
+	filesystem.CreateFolder(bucketsPath, entry.Name)
+	filesystem.SetBucketVisibility(entry.Name, entry.Visibility)
 
 	return entry, nil
 }

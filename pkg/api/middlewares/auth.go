@@ -2,7 +2,7 @@ package middlewares
 
 import (
 	"binvault/pkg/api/helpers"
-	"binvault/pkg/auth"
+	"binvault/pkg/services/auth"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"

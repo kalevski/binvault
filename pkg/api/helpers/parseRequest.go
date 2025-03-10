@@ -1,8 +1,8 @@
 package helpers
 
 import (
-	"binvault/pkg/auth"
-	"binvault/pkg/cfg"
+	"binvault/pkg/env"
+	"binvault/pkg/services/auth"
 	"fmt"
 	"log"
 	"net/http"
@@ -57,7 +57,7 @@ func GetUserID(r *http.Request) *string {
 		return &SystemUserID
 	}
 	claims := auth.GetClaims(*token)
-	id, ok := claims[cfg.GetVars().JWT_CLAIM_ID]
+	id, ok := claims[env.GetVars().JWT_CLAIM_ID]
 	if !ok {
 		return &SystemUserID
 	}

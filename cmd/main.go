@@ -2,7 +2,7 @@ package main
 
 import (
 	"binvault/cmd/jwtgen"
-	"fmt"
+	"log"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -17,7 +17,7 @@ func main() {
 	WGCliCommand.AddCommand(jwtgen.JWTGen)
 
 	if err := WGCliCommand.Execute(); err != nil {
-		fmt.Println("error:", err.Error())
+		log.Println("error:", err.Error())
 		os.Exit(1)
 	}
 }

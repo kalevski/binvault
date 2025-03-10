@@ -1,9 +1,10 @@
 package jwtgen
 
 import (
-	"binvault/pkg/auth"
-	"binvault/pkg/cfg"
+	"binvault/pkg/env"
+	"binvault/pkg/services/auth"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/go-jose/go-jose/v4"
@@ -17,7 +18,6 @@ var JWTGen = &cobra.Command{
 	RunE:  RunJWTGen,
 }
 
-var keyFilePath string
 var keyAlgorythm string
 var claimUserID int64
 
@@ -45,7 +45,7 @@ func generateAndSignJWT() error {
 	}
 
 	if privateKey == nil && pem == nil {
-		auth.GeneratePEM(cfg.GetVars().DATA_PATH)
+		auth.GeneratePEM(env.GetVars().DATA_PATH)
 		privateKey = auth.LoadPEM().PrivateKey
 	}
 
@@ -80,7 +80,7 @@ func generateAndSignJWT() error {
 		return err
 	}
 
-	fmt.Printf("Token: %s\n", token)
+	log.Printf("Token: %s\n", token)
 
 	return nil
 }

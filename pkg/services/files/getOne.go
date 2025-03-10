@@ -1,4 +1,4 @@
-package services
+package files
 
 import (
 	"binvault/pkg/database"

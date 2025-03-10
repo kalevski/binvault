@@ -1,7 +1,7 @@
 package compression
 
 import (
-	"binvault/pkg/clients/filesystem"
+	"binvault/pkg/services/filesystem"
 	"binvault/pkg/tasks"
 )
 

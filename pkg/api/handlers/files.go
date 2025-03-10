@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"binvault/pkg/api/helpers"
-	"binvault/pkg/services"
+	"binvault/pkg/services/files"
 	"io"
 	"net/http"
 
@@ -13,7 +13,7 @@ import (
 func FileGetMany(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	pagination := helpers.GetRequestPagination(r)
 	bucketName := params.ByName("bucketName")
-	files := services.FileGetMany(bucketName, pagination.Limit, pagination.Offset)
+	files := files.FileGetMany(bucketName, pagination.Limit, pagination.Offset)
 	helpers.SendJSON(w, http.StatusOK, files)
 }
 
@@ -48,7 +48,7 @@ func FileCreate(w http.ResponseWriter, r *http.Request, params httprouter.Params
 		return
 	}
 
-	createdFile, err := services.FileCreate(bucketName, header.Filename, content, strict)
+	createdFile, err := files.FileCreate(bucketName, header.Filename, content, strict)
 	if err != nil {
 		helpers.SendError(w, http.StatusBadRequest, err.Error())
 		return
@@ -61,7 +61,7 @@ func FileCreate(w http.ResponseWriter, r *http.Request, params httprouter.Params
 func FileGetOne(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	bucketName := params.ByName("bucketName")
 	fileId := params.ByName("fileId")
-	file, err := services.FileGetOne(bucketName, fileId)
+	file, err := files.FileGetOne(bucketName, fileId)
 	if err != nil {
 		helpers.SendError(w, http.StatusNotFound, err.Error())
 	}

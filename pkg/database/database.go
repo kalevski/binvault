@@ -1,7 +1,7 @@
 package database
 
 import (
-	"binvault/pkg/cfg"
+	"binvault/pkg/env"
 	"log"
 	"path/filepath"
 
@@ -18,8 +18,8 @@ func Init() {
 }
 
 func OpenConnection() *gorm.DB {
-	log.Default().Println("Opening connection to database")
-	path := filepath.Join(cfg.GetPath("DATA_PATH"), cfg.GetVars().DB_NAME)
+	log.Println("Opening connection to database")
+	path := filepath.Join(env.GetPath("DATA_PATH"), env.GetVars().DB_NAME)
 	log.Println("Database path: ", path)
 	sqlite := sqlite.Open(path)
 	db, err := gorm.Open(sqlite, &gorm.Config{})

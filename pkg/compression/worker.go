@@ -1,11 +1,11 @@
 package compression
 
 import (
-	"binvault/pkg/clients/filesystem"
-	"binvault/pkg/clients/guetzli"
-	"binvault/pkg/clients/pngquant"
 	"binvault/pkg/database"
 	"binvault/pkg/models"
+	"binvault/pkg/services/filesystem"
+	"binvault/pkg/services/guetzli"
+	"binvault/pkg/services/pngquant"
 	"log"
 	"path/filepath"
 	"strings"

@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"binvault/pkg/cfg"
+	"binvault/pkg/env"
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/pem"
@@ -18,8 +18,8 @@ type PEM struct {
 }
 
 func LoadPEM() *PEM {
-	privatePath := filepath.Join(cfg.GetVars().DATA_PATH, cfg.GetVars().PEM_PRIVATE_FILENAME)
-	publicPath := filepath.Join(cfg.GetVars().DATA_PATH, cfg.GetVars().PEM_PUBLIC_FILENAME)
+	privatePath := filepath.Join(env.GetVars().DATA_PATH, env.GetVars().PEM_PRIVATE_FILENAME)
+	publicPath := filepath.Join(env.GetVars().DATA_PATH, env.GetVars().PEM_PUBLIC_FILENAME)
 
 	privateData, err := os.ReadFile(privatePath)
 	if err != nil {
@@ -56,7 +56,7 @@ func LoadPEM() *PEM {
 }
 
 func LoadRSAPublicKey() *rsa.PublicKey {
-	data := cfg.GetVars().SSH_PUBLIC_KEY
+	data := env.GetVars().SSH_PUBLIC_KEY
 	parsedKey, _, _, _, err := ssh.ParseAuthorizedKey([]byte(data))
 	if err != nil {
 		log.Fatalf("Failed to parse public key: %v", err)
@@ -76,11 +76,11 @@ func LoadRSAPublicKey() *rsa.PublicKey {
 }
 
 func LoadRSAPrivateKey() *rsa.PrivateKey {
-	if !cfg.EnvExists("SSH_PRIVATE_KEY") {
+	if !env.EnvExists("SSH_PRIVATE_KEY") {
 		return nil
 	}
 
-	data := cfg.GetVars().SSH_PRIVATE_KEY
+	data := env.GetVars().SSH_PRIVATE_KEY
 	parsedKey, err := ssh.ParseRawPrivateKey([]byte(data))
 	if err != nil {
 		return nil

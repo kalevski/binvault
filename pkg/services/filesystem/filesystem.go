@@ -1,9 +1,8 @@
 package filesystem
 
 import (
-	"binvault/pkg/cfg"
+	"binvault/pkg/env"
 	"binvault/pkg/models"
-	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -23,11 +22,11 @@ func WatchFolder(path string, handler FileEventHandler) {
 	watcher, err := fsnotify.NewWatcher()
 
 	if err != nil {
-		fmt.Println("error creating folder watcher", err)
+		log.Println("error creating folder watcher", err)
 	}
 
 	defer watcher.Close()
-	log.Default().Println("Watching folder:", path)
+	log.Println("Watching folder:", path)
 	watcher.Add(path)
 
 	for {
@@ -44,7 +43,7 @@ func WatchFolder(path string, handler FileEventHandler) {
 			if !ok {
 				return
 			}
-			fmt.Println("Watcher error:", err)
+			log.Println("Watcher error:", err)
 		}
 	}
 }
@@ -84,7 +83,7 @@ func SaveFile(path string, content []byte) error {
 }
 
 func GetFolderPath(dir string) string {
-	dataPath, err := filepath.Abs(cfg.GetPath("DATA_PATH"))
+	dataPath, err := filepath.Abs(env.GetPath("DATA_PATH"))
 	if err != nil {
 		log.Fatal(err)
 	}

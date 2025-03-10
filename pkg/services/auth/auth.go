@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"binvault/pkg/cfg"
+	"binvault/pkg/env"
 	"crypto/rsa"
 	"log"
 	"time"
@@ -38,17 +38,17 @@ func GetAuth() *Auth {
 		PrivateKey: privateKey,
 	}
 
-	if !cfg.EnvExists("JWT_CLAIM_ID") {
+	if !env.EnvExists("JWT_CLAIM_ID") {
 		panic("environment variable JWT_CLAIM_ID is not set")
 	} else {
-		auth.ClaimId = cfg.GetVar("JWT_CLAIM_ID")
+		auth.ClaimId = env.GetVar("JWT_CLAIM_ID")
 	}
 
-	if cfg.EnvExists("JWKS_URL") && cfg.EnvExists("JWKS_KID") {
+	if env.EnvExists("JWKS_URL") && env.EnvExists("JWKS_KID") {
 		log.Println("JWT auth enabled (JWKS)")
 		auth.Enabled = true
 		go updateJWKS()
-	} else if cfg.EnvExists("SSH_PUBLIC_KEY") {
+	} else if env.EnvExists("SSH_PUBLIC_KEY") {
 		auth.Enabled = true
 		auth.PublicKey = LoadRSAPublicKey()
 	} else if pem != nil {
@@ -63,8 +63,8 @@ func getInstance() *Auth {
 }
 
 func updateJWKS() {
-	jwksUrl := cfg.GetVar("JWKS_URL")
-	kid := cfg.GetVar("JWKS_KID")
+	jwksUrl := env.GetVar("JWKS_URL")
+	kid := env.GetVar("JWKS_KID")
 	for {
 		key, err := LoadRSAPublicKeyFromJWKS(jwksUrl, kid)
 		if err != nil {
