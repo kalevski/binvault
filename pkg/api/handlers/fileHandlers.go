@@ -3,6 +3,7 @@ package handlers
 import (
 	"binvault/pkg/api/helpers"
 	"binvault/pkg/services"
+	"io"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
@@ -33,20 +34,27 @@ func FileCreate(w http.ResponseWriter, r *http.Request, params httprouter.Params
 	}
 	defer file.Close()
 
+	strict := r.FormValue("strict") == "true"
 	mimetype := header.Header.Get("Content-Type")
 	if !helpers.IsMimeTypeAllowed(mimetype) {
 		helpers.SendError(w, http.StatusBadRequest, "File type is not allowed")
 		return
 	}
 
-	createdFile, err := services.FileCreate(bucketName, *header, file)
-	if err != nil {
+	content := make([]byte, header.Size)
+	_, err = file.Read(content)
+	if err != nil && err != io.EOF {
 		helpers.SendError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	helpers.SendJSON(w, http.StatusCreated, createdFile)
+	createdFile, err := services.FileCreate(bucketName, header.Filename, content, strict)
+	if err != nil {
+		helpers.SendError(w, http.StatusBadRequest, err.Error())
+		return
+	}
 
+	helpers.SendJSON(w, http.StatusCreated, createdFile)
 }
 
 // GET /bucket/:bucketName/files/:fileId

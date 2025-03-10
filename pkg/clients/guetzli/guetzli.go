@@ -1,5 +1,7 @@
 package guetzli
 
-func Compress() {
-	// Compress JPEG images
+import "log"
+
+func Compress(source string, target string) {
+	log.Println("[GUETZLI] Compressing file", source, "to", target)
 }

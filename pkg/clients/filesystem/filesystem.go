@@ -2,6 +2,7 @@ package filesystem
 
 import (
 	"binvault/pkg/cfg"
+	"binvault/pkg/models"
 	"fmt"
 	"log"
 	"os"
@@ -10,10 +11,15 @@ import (
 	"github.com/fsnotify/fsnotify"
 )
 
+const (
+	FOLDER_TEMP    = "temp"
+	FOLDER_BUCKETS = "buckets"
+	FOLDER_PUBLIC  = "public"
+)
+
 type FileEventHandler func(path string, action string)
 
-func WatchFolder(name string, handler FileEventHandler) {
-	path := filepath.Join(cfg.GetPath("DATA_PATH"), name)
+func WatchFolder(path string, handler FileEventHandler) {
 	watcher, err := fsnotify.NewWatcher()
 
 	if err != nil {
@@ -44,8 +50,7 @@ func WatchFolder(name string, handler FileEventHandler) {
 }
 
 func GetFiles(path string) []string {
-	dirPath := filepath.Join(cfg.GetPath("DATA_PATH"), path)
-	files, err := os.ReadDir(dirPath)
+	files, err := os.ReadDir(path)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -53,7 +58,7 @@ func GetFiles(path string) []string {
 	var fileList []string
 	for _, file := range files {
 		if !file.IsDir() {
-			path := filepath.Join(dirPath, file.Name())
+			path := filepath.Join(path, file.Name())
 			if err != nil {
 				log.Println("error getting absolute path:", err)
 				continue
@@ -65,9 +70,7 @@ func GetFiles(path string) []string {
 }
 
 func SaveFile(path string, content []byte) error {
-	filePath := filepath.Join(cfg.GetPath("DATA_PATH"), path)
-
-	file, err := os.Create(filePath)
+	file, err := os.Create(path)
 	if err != nil {
 		return err
 	}
@@ -78,4 +81,50 @@ func SaveFile(path string, content []byte) error {
 		return err
 	}
 	return nil
+}
+
+func GetFolderPath(dir string) string {
+	dataPath, err := filepath.Abs(cfg.GetPath("DATA_PATH"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	return filepath.Join(dataPath, dir)
+}
+
+func GetBucketPath(bucket string) string {
+	path := filepath.Join(GetFolderPath(FOLDER_BUCKETS), bucket)
+	return path
+}
+
+func GetPublicBucketPath(bucket string) string {
+	path := filepath.Join(GetFolderPath(FOLDER_PUBLIC), bucket)
+	return path
+}
+
+func SetBucketVisibility(bucket string, visibility models.Visibility) {
+	path := GetBucketPath(bucket)
+	publicPath := GetPublicBucketPath(bucket)
+	if visibility == models.Visibility_Public {
+		err := os.Symlink(path, publicPath)
+		if err != nil {
+			log.Println("error creating symlink:", err)
+		}
+	} else {
+		if _, err := os.Lstat(publicPath); err == nil {
+			err := os.Remove(publicPath)
+			if err != nil {
+				log.Println("error removing symlink:", err)
+			}
+		}
+	}
+}
+
+func CreateFolder(path string, name string) {
+	path = filepath.Join(path, name)
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		err := os.MkdirAll(path, os.ModePerm)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
 }

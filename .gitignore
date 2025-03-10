@@ -16,8 +16,8 @@ binvault
 vendor/
 Godeps/
 
-data/private/**/*
-!data/private/README.md
+data/buckets/**/*
+!data/buckets/README.md
 
 data/public/**/*
 !data/public/README.md

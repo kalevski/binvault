@@ -1,7 +1,6 @@
 package compression
 
 import (
-	"binvault/pkg/cfg"
 	"binvault/pkg/clients/filesystem"
 	"binvault/pkg/tasks"
 )
@@ -9,11 +8,11 @@ import (
 func Init() {
 	tasks.RegisterInitializer(TaskInitializer)
 	tasks.RegisterHandler("compress", handleFile)
-	go filesystem.WatchFolder(cfg.GetVars().TEMP_DIR_NAME, OnFileCreate)
+	go filesystem.WatchFolder(filesystem.GetFolderPath(filesystem.FOLDER_TEMP), OnFileCreate)
 }
 
 func TaskInitializer() []tasks.Task {
-	paths := filesystem.GetFiles(cfg.GetVars().TEMP_DIR_NAME)
+	paths := filesystem.GetFiles(filesystem.GetFolderPath(filesystem.FOLDER_TEMP))
 	var taskList []tasks.Task
 	for _, path := range paths {
 		taskList = append(taskList, tasks.Task{
