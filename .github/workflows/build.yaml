@@ -37,4 +37,4 @@ jobs:
           context: .
           platforms: linux/amd64
           push: true
-          tags: ghcr.io/kalevski/binvault/binvault:latest
+          tags: ghcr.io/kalevski/binvault:latest
