@@ -24,9 +24,8 @@ func main() {
 
 	compression.Init()
 
-	go tasks.Run(workers)
-
 	database.Init()
+	tasks.Run(workers)
 	log.Println("=== BINVAULT STARTED ===")
 	api.StartServer()
 

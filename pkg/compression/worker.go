@@ -7,9 +7,17 @@ import (
 	"binvault/pkg/services/guetzli"
 	"binvault/pkg/services/pngquant"
 	"log"
+	"os"
 	"path/filepath"
 	"strings"
 )
+
+type CompressionFunc func(path string, target string) error
+
+var compressionFuncs = map[string]CompressionFunc{
+	".jpg": guetzli.Compress,
+	".png": pngquant.Compress,
+}
 
 // example of path /data/temp/room-123.jpg
 func handleFile(path string) {
@@ -34,12 +42,17 @@ func handleFile(path string) {
 	extension := filesystem.GetFileExtension(filename)
 	target := filepath.Join(bucketPath, filename)
 
-	if extension == ".jpg" {
-		guetzli.Compress(path, target)
-	}
-
-	if extension == ".png" {
-		pngquant.Compress(path, target)
+	if compressionFunc, ok := compressionFuncs[extension]; ok {
+		err := compressionFunc(path, target)
+		if err != nil {
+			log.Printf("Error compressing file %s: %s", filename, err.Error())
+		} else {
+			log.Printf("File %s compressed successfully", filename)
+		}
+		err = os.Remove(path)
+		if err != nil {
+			log.Printf("Error deleting file %s: %s", path, err.Error())
+		}
 	}
 
 }

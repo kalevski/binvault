@@ -1,11 +1,5 @@
 package tasks
 
-import (
-	"log"
-	"sync"
-	"time"
-)
-
 type Task struct {
 	Name string `json:"name"`
 	Data string `json:"data"`
@@ -31,28 +25,22 @@ func PushTask(task Task) {
 }
 
 func Run(workers int) {
-	time.Sleep(5 * time.Second)
+	for range workers {
+		go taskExecutor()
+	}
 	for _, initializer := range initializers {
 		for _, task := range initializer() {
 			taskQueue <- task
 		}
 	}
 
-	log.Printf("Starting task workers [%d]", workers)
-	var group sync.WaitGroup
-	for range workers {
-		group.Add(1)
-		go func() {
-			defer group.Done()
-			for task := range taskQueue {
-				handler, ok := handlers[task.Name]
-				if !ok {
-					log.Printf("No handler found for task [%s]", task.Name)
-					continue
-				}
-				handler(task.Data)
-			}
-		}()
-	}
+}
 
+func taskExecutor() {
+	for {
+		task := <-taskQueue
+		if handler, ok := handlers[task.Name]; ok {
+			handler(task.Data)
+		}
+	}
 }
