@@ -1,4 +1,4 @@
-package compression
+package processors
 
 import (
 	"binvault/pkg/services/filesystem"
@@ -6,6 +6,7 @@ import (
 )
 
 func Init() {
+	initializeTemplates()
 	tasks.RegisterInitializer(TaskInitializer)
 	tasks.RegisterHandler("compress", handleFile)
 	go filesystem.WatchFolder(filesystem.GetFolderPath(filesystem.FOLDER_TEMP), OnFileCreate)

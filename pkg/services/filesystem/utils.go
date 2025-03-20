@@ -8,14 +8,18 @@ import (
 func GetFileType(filename string) models.FileType {
 	extension := GetFileExtension(filename)
 	switch extension {
-	case ".jpg", ".jpeg", ".png":
+	case "jpg", "jpeg", "png":
 		return models.FileType_Image
-	case ".txt":
+	case "txt":
 		return models.FileType_Text
 	}
 	return models.FileType_Undefined
 }
 
 func GetFileExtension(filename string) string {
-	return filepath.Ext(filename)
+	extesion := filepath.Ext(filename)
+	if len(extesion) > 0 {
+		extesion = extesion[1:]
+	}
+	return extesion
 }

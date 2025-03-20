@@ -28,7 +28,7 @@ func FileCreate(bucketName string, filename string, content []byte, strict bool)
 		hash := utils.RandomHash(5)
 		basename := filename[:len(filename)-len(filepath.Ext(filename))]
 		extension := filesystem.GetFileExtension(filename)
-		filename = fmt.Sprintf("%s-%s%s", basename, hash, extension)
+		filename = fmt.Sprintf("%s-%s.%s", basename, hash, extension)
 	}
 
 	path := filepath.Join(filesystem.GetFolderPath(filesystem.FOLDER_TEMP), filename)

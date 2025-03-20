@@ -31,12 +31,14 @@ RUN apk add --update --no-cache --virtual .build \
     && rm -f /tmp/guetzli_checksum.txt \
     && apk del .build
 
+RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
+
+
 FROM nginx:stable-alpine
 
 RUN apk -U upgrade \
     && apk add --no-cache dumb-init ca-certificates \
-    && apk add --no-cache pngquant libstdc++ \
-    && apk add --no-cache supervisor
+    && apk add --no-cache supervisor libstdc++
 
 WORKDIR /service
 

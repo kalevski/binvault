@@ -18,7 +18,6 @@ func Init() {
 }
 
 func OpenConnection() *gorm.DB {
-	log.Println("Opening connection to database")
 	path := filepath.Join(env.GetPath("DATA_PATH"), env.GetVars().DB_NAME)
 	log.Println("Database path: ", path)
 	sqlite := sqlite.Open(path)
