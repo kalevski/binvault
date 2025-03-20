@@ -50,6 +50,8 @@ COPY nginx/nginx.conf /etc/nginx/nginx.conf
 
 COPY nginx/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
+COPY nginx/processors.cfg .
+
 COPY --from=build /build/binvault/binvault /usr/local/bin
 COPY --from=build /build/guetzli /usr/local/bin
 COPY --from=build /build/binvault/binvault-server .
