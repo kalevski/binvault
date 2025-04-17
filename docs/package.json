@@ -1,0 +1,21 @@
+{
+  "name": "@binvault/docs",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "parcel serve -p 2334 --open --dist-dir public src/index.html",
+    "build": "parcel build --log-level info --dist-dir public src/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kalevski/binvault.git"
+  },
+  "author": {
+    "name": "Daniel Kalevski"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/kalevski/binvault/issues"
+  },
+  "homepage": "https://github.com/kalevski/binvault#readme",
+  "description": ""
+}
