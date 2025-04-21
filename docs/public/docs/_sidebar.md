@@ -1,2 +1,5 @@
-* [Home](/)
-* [Guide](guide.md "The greatest guide in the world")
+* [Introduction](/)
+* [Use cases](usecases.md)
+* [Deployment](deployment.md)
+* [Configuration](configuration.md)
+* [API](api.md)
