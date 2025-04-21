@@ -20,6 +20,9 @@
   },
   "homepage": "https://github.com/kalevski/binvault#readme",
   "devDependencies": {
+    "@parcel/transformer-sass": "^2.14.4",
+    "concurrently": "^9.1.2",
+    "nodemon": "^3.1.9",
     "parcel": "^2.14.4"
   }
 }

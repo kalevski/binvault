@@ -2,8 +2,8 @@
   "name": "@binvault/docs",
   "version": "0.0.1",
   "scripts": {
-    "dev": "parcel serve -p 2334 --open --dist-dir public src/index.html",
-    "build": "parcel build --log-level info --dist-dir public src/index.html"
+    "dev": "parcel serve -p 2334 --open --dist-dir public src/*.html",
+    "build": "parcel build --log-level info --no-source-maps --dist-dir public src/*.html"
   },
   "repository": {
     "type": "git",
@@ -17,5 +17,8 @@
     "url": "https://github.com/kalevski/binvault/issues"
   },
   "homepage": "https://github.com/kalevski/binvault#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "boostrap": "^2.0.0"
+  }
 }
