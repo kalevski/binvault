@@ -1,0 +1,25 @@
+{
+  "name": "@binvault/root",
+  "private": true,
+  "directories": {
+    "doc": "docs"
+  },
+  "workspaces": [
+    "docs"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kalevski/binvault.git"
+  },
+  "author": {
+    "name": "Daniel Kalevski"
+  },
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/kalevski/binvault/issues"
+  },
+  "homepage": "https://github.com/kalevski/binvault#readme",
+  "devDependencies": {
+    "parcel": "^2.14.4"
+  }
+}
