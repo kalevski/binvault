@@ -21,6 +21,8 @@ export type DocsifyConfig = {
     loadNavbar: boolean
     ga: string
     themeColor: string
+    name: string
+    nameLink: string
 }
 
 class Docsify {
