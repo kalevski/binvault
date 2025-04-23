@@ -1,4 +1,4 @@
-# Introduction
+# BinVault
 
 A **lightweight**, open-source **file server** to **upload**, **compress**, and **serve** static files — effortlessly.
 

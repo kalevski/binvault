@@ -1,5 +1,5 @@
 * [Introduction](/)
-* [Use cases](usecases.md)
 * [Deployment](deployment.md)
 * [Configuration](configuration.md)
+* [How to use](howtouse.md)
 * [API](api.md)

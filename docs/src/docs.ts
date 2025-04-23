@@ -6,8 +6,8 @@ docsify.initialize({
     coverpage: false,
     basePath: '/docs',
     loadSidebar: true,
-    subMaxLevel: 2,
+    subMaxLevel: 1,
     loadNavbar: true,
     ga: 'G-8Q40653GG4',
-    themeColor: '#e2516f'
+    themeColor: '#e2516f',
 })

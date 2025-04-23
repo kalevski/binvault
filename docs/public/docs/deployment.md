@@ -5,6 +5,11 @@
 
 ---
 
+- Bare metal
+- Docker
+- Docker Compose
+- Kubernetes
+
 ## Bare Metal
 Deploying BinVault directly on a physical server:​
 

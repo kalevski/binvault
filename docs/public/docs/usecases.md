@@ -1,6 +1,6 @@
 # 📦 Use Cases for BinVault
 
-BinVault is a flexible, developer-friendly solution for managing static files at scale. Below are some common ways it can be used across different environments and stacks.
+BinVault is a flexible, developer-friendly solution for managing static files. Below are some common ways it can be used across different environments and stacks.
 
 ---
 ## Self-Hosted Image Proxy
