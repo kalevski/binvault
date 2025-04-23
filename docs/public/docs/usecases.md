@@ -3,7 +3,7 @@
 BinVault is a flexible, developer-friendly solution for managing static files at scale. Below are some common ways it can be used across different environments and stacks.
 
 ---
-## ⚙️ Self-Hosted Image Proxy
+## Self-Hosted Image Proxy
 
 Use BinVault as an origin server to handle and compress user-uploaded images in custom workflows.
 
@@ -16,7 +16,7 @@ Use BinVault as an origin server to handle and compress user-uploaded images in 
 
 ---
 
-## 🧪 CI/CD Artifact Storage
+## CI/CD Artifact Storage
 
 Use BinVault as a lightweight alternative to object storage for storing build artifacts or test reports.
 
@@ -30,7 +30,7 @@ Use BinVault as a lightweight alternative to object storage for storing build ar
 ---
 
 
-## 🔐 Private File Storage
+## Private File Storage
 
 Create protected buckets with restricted access for private content or internal tools.
 
@@ -43,7 +43,7 @@ Create protected buckets with restricted access for private content or internal 
 
 ---
 
-## 🌐 Developer File Gateway
+## Developer File Gateway
 
 Let other services push or pull files from BinVault using a RESTful interface.
 
@@ -55,7 +55,7 @@ Let other services push or pull files from BinVault using a RESTful interface.
 
 ---
 
-## 🖼️ Image CDN Backend
+## Image CDN Backend
 
 Use BinVault to store, compress, and serve images directly or behind a CDN like Cloudflare or Fastly.
 
@@ -68,7 +68,7 @@ Use BinVault to store, compress, and serve images directly or behind a CDN like 
 
 ---
 
-## 🚀 Frontend Build Hosting
+## Frontend Build Hosting
 
 Host your static site or frontend app directly from BinVault.
 

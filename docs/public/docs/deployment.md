@@ -5,7 +5,7 @@
 
 ---
 
-## 🖥️ Bare Metal
+## Bare Metal
 Deploying BinVault directly on a physical server:​
 
 1. Download the Binary:
@@ -24,7 +24,7 @@ Ensure the specified data-dir exists and is writable.
 
 ---
 
-## 🐳 Docker
+## Docker
 
 Running BinVault in a Docker container:​
 ```bash
@@ -37,7 +37,7 @@ Replace /path/to/data with your desired host directory for persistent storage.
 
 ---
 
-## 📦 Docker Compose
+## Docker Compose
 
 Using Docker Compose for easier management:
 
@@ -56,7 +56,7 @@ services:
 
 ---
 
-## ☸️ Kubernetes
+## Kubernetes
 
 Deploying BinVault in a Kubernetes cluster:​
 
