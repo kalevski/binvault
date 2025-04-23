@@ -10,4 +10,7 @@ docsify.initialize({
     loadNavbar: true,
     ga: 'G-8Q40653GG4',
     themeColor: '#e2516f',
+    name: 'BINVAULT.io',
+    nameLink: 'https://binvault.io/',
+    logo: '/logo.png',
 })
