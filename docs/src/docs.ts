@@ -9,7 +9,7 @@ docsify.initialize({
     subMaxLevel: 1,
     loadNavbar: true,
     ga: 'G-8Q40653GG4',
-    themeColor: '#e2516f',
+    themeColor: '#9c27b0',
     name: 'BINVAULT.io',
     nameLink: 'https://binvault.io/',
     logo: '/logo.png',
