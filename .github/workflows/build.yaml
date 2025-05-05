@@ -106,7 +106,6 @@ jobs:
 
       - name: Docker meta (base variant)
         if: matrix.variant == 'base'
-        id: meta
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/kalevski/binvault
@@ -120,7 +119,6 @@ jobs:
 
       - name: Docker meta (other variants)
         if: matrix.variant != 'base'
-        id: meta
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/kalevski/binvault
