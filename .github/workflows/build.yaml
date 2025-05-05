@@ -110,4 +110,7 @@ jobs:
           context: ./docker/${{ matrix.variant }}
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/kalevski/binvault:latest
+          tags: |
+            ghcr.io/kalevski/binvault:${{ matrix.variant }}
+            ${{ matrix.variant == 'base' && 'ghcr.io/kalevski/binvault:latest' || '' }}
+            ${{ startsWith(github.ref, 'refs/tags/') && format('ghcr.io/kalevski/binvault:{0}-{1}', matrix.variant, github.ref_name) || '' }}
