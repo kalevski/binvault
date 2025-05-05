@@ -113,9 +113,9 @@ jobs:
             latest=auto
           tags: |
             type=raw,value=${{ matrix.variant }}
-            type=raw,enable={{is_tag}},value=${{ matrix.variant }}-${{ version }}
+            type=raw,enable={{is_tag}},value=${{ matrix.variant }}-{{ version }}
             type=raw,enable={{ matrix.variant == 'base' }},value=latest
-            type=raw,enable={{ is_tag && matrix.variant == 'base' }},value=${{ version }}
+            type=raw,enable={{ is_tag && matrix.variant == 'base' }},value={{ version }}
 
       - name: Build and push 📦
         uses: docker/build-push-action@v6
