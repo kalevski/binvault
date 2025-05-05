@@ -11,7 +11,7 @@ on:
 
 jobs:
   build-binaries:
-    name: Build ${{ matrix.arch }} binaries
+    name: Build binaries
     runs-on: ubuntu-24.04
 
     strategy:
@@ -106,7 +106,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: ${{ matrix.variant }}
+          context: ./builds/${{ matrix.variant }}
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ghcr.io/kalevski/binvault:latest
