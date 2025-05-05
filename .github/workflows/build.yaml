@@ -104,13 +104,24 @@ jobs:
           path: docker/${{ matrix.variant }}
           merge-multiple: true
 
+      - name: Extract Docker metadata 🧠
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/kalevski/binvault
+          flavor: |
+            latest=auto
+          tags: |
+            type=raw,value=${{ matrix.variant }}
+            type=raw,enable={{is_tag}},value=${{ matrix.variant }}-${{ version }}
+            type=raw,enable={{ matrix.variant == 'base' }},value=latest
+            type=raw,enable={{ is_tag && matrix.variant == 'base' }},value=${{ version }}
+
       - name: Build and push 📦
         uses: docker/build-push-action@v6
         with:
           context: ./docker/${{ matrix.variant }}
           platforms: linux/amd64,linux/arm64
-          push: true
-          tags: |
-            ghcr.io/kalevski/binvault:${{ matrix.variant }}
-            ${{ matrix.variant == 'base' && 'ghcr.io/kalevski/binvault:latest' || '' }}
-            ${{ startsWith(github.ref, 'refs/tags/') && format('ghcr.io/kalevski/binvault:{0}-{1}', matrix.variant, github.ref_name) || '' }}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
