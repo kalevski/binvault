@@ -67,6 +67,7 @@ jobs:
 
   build-docker:
     name: Build Docker images
+    needs: build-binaries
     runs-on: ubuntu-24.04
 
     permissions:
