@@ -11,8 +11,13 @@ jobs:
         packages: write
         
     runs-on: ubuntu-24.04
-    steps:
-      
+
+    strategy:
+      fail-fast: true
+      matrix:
+        arch: [amd64, arm64]
+
+    steps:  
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -22,21 +27,21 @@ jobs:
           go-version: 1.24
           cache: true
       
-      - name: Build executable
+      - name: Build ${{ matrix.arch }} executables
         run: |
-          CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o binvault-server ./pkg/main.go
-          CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o binvault ./cmd/main.go
+          CGO_ENABLED=1 GOOS=linux GOARCH=${{ matrix.arch }} go build -a -installsuffix cgo -o binvault-server-${{ matrix.arch }} ./pkg/main.go
+          CGO_ENABLED=1 GOOS=linux GOARCH=${{ matrix.arch }} go build -a -installsuffix cgo -o binvault-${{ matrix.arch }} ./cmd/main.go
       
       - name: Upload CLI binary
         uses: actions/upload-artifact@v4
         with:
-          name: binvault
-          path: binvault
+          name: binvault-${{ matrix.arch }}
+          path: binvault-${{ matrix.arch }}
           overwrite: true
 
       - name: Upload Server binary
         uses: actions/upload-artifact@v4
         with:
-          name: binvault-server
-          path: binvault-server
+          name: binvault-server-${{ matrix.arch }}
+          path: binvault-server-${{ matrix.arch }}
           overwrite: true
