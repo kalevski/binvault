@@ -112,8 +112,6 @@ jobs:
           flavor: |
             latest=auto
           tags: |
-            type=raw,value=base
-            type=raw,enable={{is_tag}},value=base-{{ version }}
             type=raw,enable={{is_tag}},value={{ version }}
             type=raw,enable={{is_tag}},value=latest
 
