@@ -110,7 +110,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./builds
-          dockerfile: ${{ matrix.variant }}/Dockerfile
+          file: ${{ matrix.variant }}/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ghcr.io/kalevski/binvault:latest
