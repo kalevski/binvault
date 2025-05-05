@@ -20,7 +20,7 @@ jobs:
         arch: [amd64, arm64]
 
     steps:  
-      - name: Checkout
+      - name: Checkout 🛎️
         uses: actions/checkout@v4
 
       - name: Setup Go Environment
@@ -82,7 +82,7 @@ jobs:
     
     steps:
       
-      - name: Checkout
+      - name: Checkout 🛎️
         uses: actions/checkout@v4
       
       - name: Set up QEMU
@@ -101,17 +101,16 @@ jobs:
       - name: Download all binaries into builds/
         uses: actions/download-artifact@v4
         with:
-          path: builds
+          path: docker/${{ matrix.variant }}
           merge-multiple: true
 
       - name: List files in builds directory
-        run: ls -l builds
+        run: ls -l docker/${{ matrix.variant }}
 
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: .
-          file: Dockerfile.${{ matrix.variant }}
+          context: ./docker/${{ matrix.variant }}
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ghcr.io/kalevski/binvault:latest
