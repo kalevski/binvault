@@ -73,6 +73,7 @@ jobs:
     permissions:
         contents: read
         packages: write
+        id-token: write
 
     strategy:
       fail-fast: true
@@ -110,7 +111,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./builds
-          file: ${{ matrix.variant }}/Dockerfile
+          file: Dockerfile.${{ matrix.variant }}
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ghcr.io/kalevski/binvault:latest
