@@ -103,6 +103,9 @@ jobs:
           path: builds
           merge-multiple: true
 
+      - name: List files in builds directory
+        run: ls -l builds
+
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
