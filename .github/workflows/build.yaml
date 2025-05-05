@@ -7,7 +7,7 @@ on:
       - '*'
     paths: [ 'cmd/**', 'pkg/**', 'builds/**', '.github/workflows/build.yaml' ]
     tags:
-      - 'v*.*.*'
+      - '*.*.*'
 
 jobs:
   build-binaries:
