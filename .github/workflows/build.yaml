@@ -104,7 +104,8 @@ jobs:
           path: docker/${{ matrix.variant }}
           merge-multiple: true
 
-      - name: Extract Docker metadata 🧠
+      - name: Docker meta (base variant)
+        if: matrix.variant == 'base'
         id: meta
         uses: docker/metadata-action@v5
         with:
@@ -112,10 +113,22 @@ jobs:
           flavor: |
             latest=auto
           tags: |
-            type=raw,value=${{ matrix.variant }}
-            type=raw,enable={{is_tag}},value=${{ matrix.variant }}-{{ version }}
-            type=raw,enable={{ matrix.variant == 'base' }},value=latest
-            type=raw,enable={{ is_tag && matrix.variant == 'base' }},value={{ version }}
+            type=raw,value=base
+            type=raw,enable={{is_tag}},value=base-{{ version }}
+            type=raw,enable={{is_tag}},value={{ version }}
+            type=raw,enable={{is_tag}},value=latest
+
+      - name: Docker meta (other variants)
+        if: matrix.variant != 'base'
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/kalevski/binvault
+          flavor: |
+            latest=auto
+          tags: |
+            type=raw,value={{ matrix.variant }}
+            type=raw,enable={{is_tag}},value={{ matrix.variant }}-{{ version }}
 
       - name: Build and push 📦
         uses: docker/build-push-action@v6
