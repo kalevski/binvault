@@ -3,8 +3,6 @@ name: Build
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
-    paths: [ 'cmd/**', 'pkg/**', 'nginx/**', 'Dockerfile', '.github/workflows/build.yaml' ]
 
 jobs:
   build:
@@ -17,24 +15,28 @@ jobs:
       
       - name: Checkout
         uses: actions/checkout@v4
-      
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
+
+      - name: Setup Go Environment
+        uses: actions/setup-go@v5
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          go-version: 1.24
+          cache: true
       
-      - name: Build and push
-        uses: docker/build-push-action@v6
+      - name: Build executable
+        run: |
+          CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o binvault-server ./pkg/main.go
+          CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o binvault ./cmd/main.go
+      
+      - name: Upload CLI binary
+        uses: actions/upload-artifact@v4
         with:
-          context: .
-          platforms: linux/amd64
-          push: true
-          tags: ghcr.io/kalevski/binvault:latest
+          name: binvault
+          path: binvault
+          overwrite: true
+
+      - name: Upload Server binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: binvault-server
+          path: binvault-server
+          overwrite: true
