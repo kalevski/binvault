@@ -104,27 +104,16 @@ jobs:
           path: docker/${{ matrix.variant }}
           merge-multiple: true
 
-      - name: Docker meta (base variant)
+      - name: Build and push (base) 📦
+        uses: docker/build-push-action@v6
         if: matrix.variant == 'base'
-        uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/kalevski/binvault
-          flavor: |
-            latest=auto
+          context: ./docker/${{ matrix.variant }}
+          platforms: linux/amd64,linux/arm64
+          push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            type=raw,enable={{is_tag}},value={{ version }}
-            type=raw,enable={{is_tag}},value=latest
-
-      - name: Docker meta (other variants)
-        if: matrix.variant != 'base'
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/kalevski/binvault
-          flavor: |
-            latest=auto
-          tags: |
-            type=raw,value={{ matrix.variant }}
-            type=raw,enable={{is_tag}},value={{ matrix.variant }}-{{ version }}
+            ghcr.io/kalevski/binvault:latest
+            ${{ startsWith(github.ref, 'refs/tags/') && format('ghcr.io/kalevski/binvault:{0}', github.ref_name) || '' }}
 
       - name: Build and push 📦
         uses: docker/build-push-action@v6
@@ -132,5 +121,6 @@ jobs:
           context: ./docker/${{ matrix.variant }}
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: |
+            ghcr.io/kalevski/binvault:${{ matrix.variant }}
+            ${{ startsWith(github.ref, 'refs/tags/') && format('ghcr.io/kalevski/binvault:{0}-{1}', matrix.variant, github.ref_name) || '' }}
