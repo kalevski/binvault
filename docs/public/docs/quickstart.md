@@ -14,14 +14,54 @@ For a bare-metal setup without Docker, follow [this guide](setup_baremetal.md).
 
 ---
 
-For quick start we created a image that includes
+### Quickstart with Prebuilt Docker Image
 
-1. binvault server - Server that exposes rest API for uploading / managing files
-1. binvault cli - bundled utilities for managing binvault service
-1. NGINX - HTTP server for serving public buckets & files 
-1. imagemagick - library as an example how images can be compressed when they are uploaded
+To simplify the setup process, we provide a prebuilt Docker image that includes the following components:
 
-All of this are included and already setuped in image that can be downloaded using
+1. **BinVault Server**: A REST API server for uploading and managing files.
+2. **BinVault CLI**: Command-line utilities for managing the BinVault service.
+3. **NGINX**: An HTTP server for serving public buckets and files.
+4. **ImageMagick**: A library demonstrating how images can be compressed during upload.
 
-`docker pull ghcr.io/kalevski/binvault:quickstart`
+All these components are preconfigured and included in the Docker image, which can be pulled using the following command:
 
+```bash
+docker pull ghcr.io/kalevski/binvault:quickstart
+```
+
+#### Starting the Service
+
+Once the image is downloaded, you can start the service with:
+
+```bash
+docker run -d --name my_vault -p 8080:80 ghcr.io/kalevski/binvault:quickstart
+```
+
+After starting the container, verify that the service is running by accessing the homepage at [http://localhost:8080](http://localhost:8080). The page should display the BinVault interface, similar to the following:
+
+![BinVault Homepage](path/to/uploaded-image.png)
+
+### Uploading Your First File
+
+To upload your first file, you need to create a bucket. Use the following `curl` command to create a public bucket named `my_bucket`:
+
+```bash
+curl --request POST \
+  --url http://localhost:8080/api/buckets \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"name": "web",
+	"visibility": "public"
+}'
+```
+
+Once the bucket is created, you can start uploading files to it. Refer to the API 
+
+To upload your first file to my_bucket you can use 
+```bash
+curl --request POST \
+  --url http://localhost:8080/api/buckets/my_bucket/files \
+  --header 'Content-Type: multipart/form-data' \
+  --form file={path_to_your_file} \
+  --form strict=false
+```
