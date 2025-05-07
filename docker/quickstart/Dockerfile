@@ -24,7 +24,6 @@ COPY ./binvault-server-${TARGETARCH} binvault-server
 
 RUN chmod +x /service/binvault-server
 
-EXPOSE 8080
 EXPOSE 80
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
