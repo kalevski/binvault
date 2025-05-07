@@ -2,10 +2,11 @@ FROM nginx:mainline
 
 ARG TARGETARCH
 
-RUN apk -U upgrade \
-    && apk add --no-cache dumb-init ca-certificates \
-    && apk add --no-cache supervisor libstdc++ \
-    && apk add --no-cache imagemagick
+RUN apt-get update && apt-get upgrade -y \
+    && apt-get install -y --no-install-recommends dumb-init ca-certificates \
+    && apt-get install -y --no-install-recommends supervisor libstdc++6 \
+    && apt-get install -y --no-install-recommends imagemagick \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /service
 
