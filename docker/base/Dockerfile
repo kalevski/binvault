@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM debian:bookworm-slim
 
 ARG TARGETARCH
 
