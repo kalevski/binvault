@@ -127,3 +127,19 @@ jobs:
           tags: |
             ghcr.io/kalevski/binvault:${{ matrix.variant }}
             ${{ startsWith(github.ref, 'refs/tags/') && format('ghcr.io/kalevski/binvault:{0}-{1}', matrix.variant, github.ref_name) || '' }}
+
+  clean-ghcr:
+    name: Clean up Docker images
+    needs: build-docker
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Clean up untagged images 🧹
+        uses: quartx-analytics/ghcr-cleaner@v1
+        with:
+          owner-type: user
+          token: ${{ secrets.PAT_TOKEN }}
+          repository_owner: ${{ github.repository_owner }}
+          repository-name: ${{ github.repository }}
+          delete-untagged: false
+          keep-at-most: 5
