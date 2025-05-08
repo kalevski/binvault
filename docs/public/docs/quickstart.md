@@ -1,67 +1,90 @@
-# Quickstart
+# 🚀 Quickstart Guide
 
-**_This is a short tutorial covering a simple scenario for using BinVault as a storage service for any type of files._**
+_A step-by-step tutorial to get **BinVault** up and running as a storage service for any type of file._
 
-This tutorial does not cover setting up file processors or configuring authorization. 
-
-- To learn more about file processors, refer to [this guide](guide_processors.md).
-- To learn more about authorization, refer to [this guide](guide_authorization.md).
-
-### Prerequisites
-Before you begin, ensure that [Docker](https://www.docker.com/) is installed on your machine.
-
-For a bare-metal setup without Docker, follow [this guide](setup_baremetal.md).
+> **Note**: This guide does **not** cover file processors or authorization setup.  
+> • For file processing details, see [File Processor Setup](guide_processors.md).  
+> • For authentication and access control, see [Authorization Guide](guide_authorization.md).
 
 ---
 
-### Quickstart with Prebuilt Docker Image
+### ✅ Prerequisites
 
-To simplify the setup process, we provide a prebuilt Docker image that includes the following components:
+Ensure the following is installed on your system:
 
-1. **BinVault Server**: A REST API server for uploading and managing files.
-2. **BinVault CLI**: Command-line utilities for managing the BinVault service.
-3. **NGINX**: An HTTP server for serving public buckets and files.
-4. **ImageMagick**: A library demonstrating how images can be compressed during upload.
+- 🐳 [Docker](https://www.docker.com/)  
+  _(For bare-metal installation, refer to the [Bare-Metal Setup Guide](setup_baremetal.md))_
 
-All these components are preconfigured and included in the Docker image, which can be pulled using the following command:
+---
+
+### 🐳 Quickstart Using Docker
+
+The prebuilt **:quickstart** Docker image includes:
+
+- **BinVault Server** – REST API for file uploads and management  
+- **BinVault CLI** – Command-line tools  
+- **NGINX** – Static file server for public buckets  
+- **ImageMagick** – Demonstrates image compression during uploads
+
+#### 🔹 Step 1: Pull the Docker Image
 
 ```bash
 docker pull ghcr.io/kalevski/binvault:quickstart
 ```
 
-#### Starting the Service
+---
 
-Once the image is downloaded, you can start the service with:
+#### 🔹 Step 2: Start the Service
 
 ```bash
-docker run -d --name my_vault -p 8080:80 ghcr.io/kalevski/binvault:quickstart
+docker run -d \
+  --name my_vault \
+  -p 8080:80 \
+  ghcr.io/kalevski/binvault:quickstart
 ```
 
-After starting the container, verify that the service is running by accessing the homepage at [http://localhost:8080](http://localhost:8080). The page should display the BinVault interface, similar to the following:
+Once running, open your browser and navigate to [http://localhost:8080](http://localhost:8080).
+
+You should see the BinVault default page.
 
 ![BinVault Homepage](path/to/uploaded-image.png)
 
-### Uploading Your First File
+---
 
-To upload your first file, you need to create a bucket. Use the following `curl` command to create a public bucket named `my_bucket`:
+### 📤 Upload Your First File
 
+#### 🔹 Step 1: Create a Bucket
+Run the following `curl` command to create a public bucket named `my_bucket`:
 ```bash
-curl --request POST \
-  --url http://localhost:8080/api/buckets \
+curl --request POST http://localhost:8080/api/buckets \
   --header 'Content-Type: application/json' \
   --data '{
-	"name": "web",
-	"visibility": "public"
-}'
+    "name": "my_bucket",
+    "visibility": "public"
+  }'
 ```
 
-Once the bucket is created, you can start uploading files to it. Refer to the API 
-
-To upload your first file to my_bucket you can use 
+#### 🔹 Step 2: Upload a File
 ```bash
-curl --request POST \
-  --url http://localhost:8080/api/buckets/my_bucket/files \
+curl --request POST http://localhost:8080/api/buckets/my_bucket/files \
   --header 'Content-Type: multipart/form-data' \
   --form file={path_to_your_file} \
   --form strict=false
 ```
+
+📌 Replace `{path_to_your_file}` with the actual file path (e.g., `./logo.png`).
+
+---
+
+### 🌐 Access Your Uploaded File
+
+Your uploaded file is now accessible at:  
+`http://localhost:8080/my_bucket/{filename.extension}`
+
+🎉 Congratulations! You've successfully installed BinVault, created a bucket, and uploaded your first file.
+
+---
+
+### 📚 What’s Next?
+
+Discover [How it Works](how-works.md).

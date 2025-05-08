@@ -1,6 +1,6 @@
 * [Introduction](/)
 * [Quickstart](quickstart.md)
-* [How it Works](details.md)
+* [How it Works](how-works.md)
 * [Configuration](configuration.md)
 * [Client: Rest API](api.md)
 * ***Client: GO (soon)***
