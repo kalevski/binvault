@@ -141,5 +141,4 @@ jobs:
           token: ${{ secrets.PAT_TOKEN }}
           repository_owner: ${{ github.repository_owner }}
           repository-name: ${{ github.repository }}
-          delete-untagged: false
-          keep-at-most: 5
+          delete-untagged: true
