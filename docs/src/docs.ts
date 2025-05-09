@@ -11,7 +11,7 @@ docsify.initialize({
     ga: 'G-8Q40653GG4',
     themeColor: '#9c27b0',
     name: 'BINVAULT.io',
-    nameLink: 'https://binvault.io/',
+    nameLink: '/',
     logo: '/logo.png',
     auto2top: true,
     routerMode: 'hash',

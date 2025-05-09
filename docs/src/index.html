@@ -1,11 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BinVault - Open Source File Server</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #9c27b0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8f9fa;
+      color: #212529;
+    }
+    .hero {
+      padding: 6rem 1rem;
+      background: linear-gradient(to right, #9c27b0, #6a1b9a);
+      color: white;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+    }
+    .hero p {
+      font-size: 1.2rem;
+    }
+    .btn-primary {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+    .btn-primary:hover {
+      background-color: #7b1fa2;
+      border-color: #7b1fa2;
+    }
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: var(--primary-color);
+    }
+    .card-title {
+      color: var(--primary-color);
+    }
+    footer {
+      background-color: #212529;
+      color: #ffffff;
+      text-align: center;
+      padding: 2rem 1rem;
+      margin-top: 3rem;
+    }
+    .navbar {
+      background-color: var(--primary-color) !important;
+    }
+    .navbar .nav-link, .navbar .navbar-brand {
+      color: white !important;
+    }
+  </style>
 </head>
 <body>
-    <a href="docs.html">Docs</a>
+
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">BinVault</a>
+      <div class="collapse navbar-collapse justify-content-end">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/kalevski/binvault">GitHub</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./docs">Docs</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Open-Source File Server for Uploading, Compressing & Serving Files</h1>
+      <p class="lead mt-3">BinVault is a lightweight, cloud-native solution to store, process, and serve static content with ease.</p>
+      <a class="btn btn-primary btn-lg mt-4" href="">Get Started</a>
+    </div>
+  </section>
+
+  <section class="py-5">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-3">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+              <div class="feature-icon">🗃️</div>
+              <h5 class="card-title">Bucket-Based Storage</h5>
+              <p class="card-text">Organize files in public or private buckets with structured access control.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+              <div class="feature-icon">⚙️</div>
+              <h5 class="card-title">Custom File Processing</h5>
+              <p class="card-text">Use CLI tools like pngquant, cwebp, or ImageMagick to process uploaded files.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+              <div class="feature-icon">🔐</div>
+              <h5 class="card-title">JWT Authorization</h5>
+              <p class="card-text">Secure endpoints with RSA, JWKS, or PEM-based JSON Web Token validation.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+              <div class="feature-icon">🐳</div>
+              <h5 class="card-title">Container Ready</h5>
+              <p class="card-text">Deploy with Docker, Compose, or Kubernetes. Lightweight and cloud-native.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 BinVault — Open Source and built with ❤️ by contributors</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

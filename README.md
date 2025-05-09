@@ -1,6 +1,6 @@
 # 📦 BinVault
 
-**BinVault** is a lightweight, open-source file server designed to **upload**, **compress**, and **serve** static files effortlessly.  
+**BinVault** is a lightweight, open-source file storage service designed to **upload**, **transform**, and **serve** static files effortlessly.  
 Built in Go and optimized for containerized environments, it’s ideal for developers, CI/CD pipelines, and edge platforms.
 
 ![GitHub release](https://img.shields.io/github/v/release/kalevski/binvault?style=for-the-badge)
@@ -38,6 +38,8 @@ Then open: [http://localhost:8080](http://localhost:8080)
 
 BinVault exposes a REST API to upload and serve files. Files are grouped into buckets and can be processed using configurable CLI commands. Public buckets are accessible via NGINX; private buckets require authorization.
 
+
+
 [📖 Learn More](https://binvault.io/docs.html#/how-works)
 
 ---
@@ -67,8 +69,7 @@ Customize behavior using environment variables:
 SERVER_PORT=8080
 DATA_PATH=./data
 PROCESSOR_CONFIG_PATH=./processors.cfg
-RSA_PUBLIC_KEY=./keys/public.pem
-JWT_CLAIM_ID=id
+RSA_PUBLIC_KEY=./keys/id_rsa.pub
 ```
 
 [🔧 Configuration Details](https://binvault.io/docs.html#/how-works?id=%f0%9f%94%90-authorization)
