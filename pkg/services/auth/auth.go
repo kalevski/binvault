@@ -48,7 +48,7 @@ func GetAuth() *Auth {
 		log.Println("JWT auth enabled (JWKS)")
 		auth.Enabled = true
 		go updateJWKS()
-	} else if env.EnvExists("SSH_PUBLIC_KEY") {
+	} else if env.EnvExists("RSA_PUBLIC_KEY") {
 		auth.Enabled = true
 		auth.PublicKey = LoadRSAPublicKey()
 	} else if pem != nil {

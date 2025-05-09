@@ -1,72 +1,92 @@
-# BinVault
+# 📦 BinVault
 
-**BinVault** is an open-source file storage and compression service designed for cloud-native environments. It efficiently compresses, stores, and serves images and other files, making it ideal for developers, hosting providers, and edge computing platforms.
+**BinVault** is a lightweight, open-source file storage service designed to **upload**, **transform**, and **serve** static files effortlessly.  
+Built in Go and optimized for containerized environments, it’s ideal for developers, CI/CD pipelines, and edge platforms.
 
-[![forthebadge](https://forthebadge.com/images/featured/featured-built-with-love.svg)](https://forthebadge.com)
-
-
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/kalevski/binvault?style=for-the-badge)
-![Docker Pulls](https://img.shields.io/docker/pulls/kalevski/binvault?style=for-the-badge)
+![GitHub release](https://img.shields.io/github/v/release/kalevski/binvault?style=for-the-badge)
 ![GitHub issues](https://img.shields.io/github/issues/kalevski/binvault?style=for-the-badge)
-![GitHub](https://img.shields.io/github/license/kalevski/binvault?style=for-the-badge)
+![License](https://img.shields.io/github/license/kalevski/binvault?style=for-the-badge)
+
+---
 
 ## 🚀 Features
 
-- **Efficient Storage**: Organizes files in "buckets" with customizable permissions.
-- **Built-in Nginx Server**: Serves compressed files with caching and gzip support.
-- **REST API**: Fully functional API for uploading, retrieving, and managing files.
-- **Worker Queue**: Asynchronous compression using worker pools.
-- **SQLite Database**: Tracks files and metadata efficiently.
-- **Cloud-Native Ready**: Supports Kubernetes, Docker, and containerized deployments.
+- 🗃️ Bucket-based file organization (public/private)
+- 🛠️ Extensible CLI-based file processing
+- 🌐 REST API for uploads, downloads, and management
+- 🔐 Optional JWT authorization (RSA, JWKS, PEM)
+- ☁️ Ready for Docker, Kubernetes, and Swarm deployments
 
 ---
 
-## 📦 Installation
-```sh
-docker run -p 80:80 -p 8080:8080 -v $(pwd)/data:/app/data ghcr.io/kalevski/binvault:latest
+## 🧪 Quickstart
+
+Get started with Docker:
+
+```bash
+docker pull ghcr.io/kalevski/binvault:quickstart
+docker run -d -p 8080:80 ghcr.io/kalevski/binvault:quickstart
 ```
 
+Then open: [http://localhost:8080](http://localhost:8080)
+
+[📖 Full Quickstart Guide](https://binvault.io/docs.html#/quickstart)
+
 ---
 
-## 📌 Usage
+## 🛠 How It Works
 
-🚀 **Start using BinVault today for efficient and optimized file storage!**
+BinVault exposes a REST API to upload and serve files. Files are grouped into buckets and can be processed using configurable CLI commands. Public buckets are accessible via NGINX; private buckets require authorization.
 
-| HTTP Method | Endpoint                          | Request Body | Response Body |
-|-------------|-----------------------------------|--------------|---------------|
-| GET         | /api/buckets                      | None         | JSON array of buckets |
-| GET         | /api/buckets/:name                | None         | JSON object of the bucket |
-| POST        | /api/buckets                      | JSON object  | JSON object of the created bucket |
-| DELETE      | /api/buckets/:name                | None         | JSON object with deletion status |
-| GET         | /api/buckets/:name/files          | None         | JSON array of files |
-| GET         | /api/buckets/:name/files/:id      | None         | JSON object of the file |
-| GET         | /api/buckets/:name/files/:id/content | None         | File content |
-| POST        | /api/buckets/:name/files          | File data    | JSON object of the uploaded file |
-| DELETE      | /api/buckets/:name/files/:id      | None         | JSON object with deletion status |
 
-## 🛠 Configuration
-BinVault uses environment variables for customization:
-```sh
+
+[📖 Learn More](https://binvault.io/docs.html#/how-works)
+
+---
+
+## 📚 REST API Overview
+
+BinVault provides CRUD endpoints for managing files and buckets.
+
+| Method | Endpoint                         | Description            |
+|--------|----------------------------------|------------------------|
+| POST   | `/api/buckets`                  | Create a bucket        |
+| GET    | `/api/buckets`                  | List all buckets       |
+| GET    | `/api/buckets/{name}`           | Get bucket details     |
+| DELETE | `/api/buckets/{name}`           | Delete a bucket        |
+| GET    | `/api/buckets/{name}/files`     | List files in a bucket |
+| POST   | `/api/buckets/{name}/files`     | Upload a file          |
+
+[📖 Full API Reference](https://binvault.io/docs.html#/api)
+
+---
+
+## ⚙️ Configuration
+
+Customize behavior using environment variables:
+
+```bash
 SERVER_PORT=8080
-SERVER_HOST=localhost
 DATA_PATH=./data
-DB_NAME=_database
-JWKS=
+PROCESSOR_CONFIG_PATH=./processors.cfg
+RSA_PUBLIC_KEY=./keys/id_rsa.pub
 ```
+
+[🔧 Configuration Details](https://binvault.io/docs.html#/how-works?id=%f0%9f%94%90-authorization)
 
 ---
 
 ## 🤝 Contributing
-We welcome contributions! Follow these steps:
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature-name`)
-3. Commit changes (`git commit -m "Added new feature"`)
-4. Push to your fork and submit a PR
 
-For detailed contribution guidelines, see [CONTRIBUTING.md](CONTRIBUTING.md).
+1. Fork this repo
+2. Create a new branch: `git checkout -b feature/your-feature`
+3. Commit your changes
+4. Open a pull request
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for details.
 
 ---
+
 ## 📜 License
 
-BinVault is released under the **Apache 2.0 License**.
-
+Released under the **Apache 2.0 License**.

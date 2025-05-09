@@ -56,7 +56,7 @@ func LoadPEM() *PEM {
 }
 
 func LoadRSAPublicKey() *rsa.PublicKey {
-	data := env.GetVars().SSH_PUBLIC_KEY
+	data := env.GetVars().RSA_PUBLIC_KEY
 	parsedKey, _, _, _, err := ssh.ParseAuthorizedKey([]byte(data))
 	if err != nil {
 		log.Fatalf("Failed to parse public key: %v", err)
@@ -76,11 +76,11 @@ func LoadRSAPublicKey() *rsa.PublicKey {
 }
 
 func LoadRSAPrivateKey() *rsa.PrivateKey {
-	if !env.EnvExists("SSH_PRIVATE_KEY") {
+	if !env.EnvExists("RSA_PRIVATE_KEY") {
 		return nil
 	}
 
-	data := env.GetVars().SSH_PRIVATE_KEY
+	data := env.GetVars().RSA_PRIVATE_KEY
 	parsedKey, err := ssh.ParseRawPrivateKey([]byte(data))
 	if err != nil {
 		return nil

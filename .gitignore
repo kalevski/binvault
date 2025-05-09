@@ -31,9 +31,12 @@ node_modules
 .parcel-cache
 
 docs/public/*
+
 !docs/public/README.md
 !docs/public/images
 !docs/public/*.pdf
 !docs/public/*.json
 !docs/public/*.md
 !docs/public/CNAME
+!docs/public/.nojekyll
+!docs/public/docs

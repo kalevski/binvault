@@ -16,8 +16,8 @@ type Variables struct {
 	DB_NAME               string
 	JWKS_URL              string
 	JWKS_KID              string
-	SSH_PUBLIC_KEY        string
-	SSH_PRIVATE_KEY       string
+	RSA_PUBLIC_KEY        string
+	RSA_PRIVATE_KEY       string
 	JWT_CLAIM_ID          string
 	PEM_PRIVATE_FILENAME  string
 	PEM_PUBLIC_FILENAME   string
@@ -33,8 +33,8 @@ func GetVars() *Variables {
 			DB_NAME:               readEnv("DB_NAME", "database.db"),
 			JWKS_URL:              readEnv("JWKS_URL", ""),
 			JWKS_KID:              readEnv("JWKS_KID", "main"),
-			SSH_PUBLIC_KEY:        readEnv("SSH_PUBLIC_KEY", ""),
-			SSH_PRIVATE_KEY:       readEnv("SSH_PRIVATE_KEY", ""),
+			RSA_PUBLIC_KEY:        readEnv("RSA_PUBLIC_KEY", ""),
+			RSA_PRIVATE_KEY:       readEnv("RSA_PRIVATE_KEY", ""),
 			JWT_CLAIM_ID:          readEnv("JWT_CLAIM_ID", "id"),
 			PEM_PRIVATE_FILENAME:  readEnv("PEM_PRIVATE_FILENAME", "key.pem"),
 			PEM_PUBLIC_FILENAME:   readEnv("PEM_PUBLIC_FILENAME", "key_pub.pem"),

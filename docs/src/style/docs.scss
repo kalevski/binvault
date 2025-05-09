@@ -1,0 +1,15 @@
+@use "configs/futuraft";
+
+html, body {
+    font-family:'Futura PT Book', sans-serif;
+    font-weight:normal;
+    font-size:18px;
+}
+
+.sidebar {
+    li {
+        a {
+            font-size: 18px !important;
+        }
+    }
+}
