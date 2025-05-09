@@ -23,12 +23,27 @@ export type DocsifyConfig = {
     themeColor: string
     name: string
     nameLink: string
+    routerMode: 'hash' | 'history',
+}
+
+export interface DocsifyPlugin {
+    start(): void
+    dispose(): void
 }
 
 class Docsify {
 
+    plugins: DocsifyPlugin[] = []
+
     initialize(config: Partial<DocsifyConfig>) {
         window['$docsify'] = config
+        for (const plugin of this.plugins) {
+            plugin.start()
+        }
+    }
+
+    addPlugin(plugin: DocsifyPlugin) {
+        this.plugins.push(plugin)
     }
 
 }

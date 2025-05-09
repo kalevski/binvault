@@ -13,4 +13,6 @@ docsify.initialize({
     name: 'BINVAULT.io',
     nameLink: 'https://binvault.io/',
     logo: '/logo.png',
+    auto2top: true,
+    routerMode: 'hash',
 })
