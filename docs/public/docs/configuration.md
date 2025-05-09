@@ -1,7 +1,12 @@
 # Configuration
-BinVault allows extensive customization through environment variables. Below is a categorized list of the available environment variables:
 
-### General
+BinVault supports extensive customization through environment variables, allowing you to control server behavior, file processing, and authorization.
+
+Below is a categorized list of configuration options:
+
+### 🌐 General
+
+Configure core aspects of the BinVault server, such as port, hostname, and data paths.
 
 | **Env Variable**        | **Default Value** | **Description**                              |
 |--------------------------|-------------------|----------------------------------------------|
@@ -11,20 +16,21 @@ BinVault allows extensive customization through environment variables. Below is 
 | `DB_NAME`               | `database.db`     | The name of the database file.              |
 | `PROCESSOR_CONFIG_PATH` | `./processors.cfg`| The path to the processor configuration file.|
 
-## Authorization - Secured Endpoints
+### 🔐 Authorization (Secured Endpoints)
 
-NOTE: JWT_CLIAM_ID
+Enable JWT-based authentication using RSA keys, JWKS, or PEM files. These variables control how user identity is verified and extracted.
 
 
-**RSA**
+#### **RSA**
+Use this method when managing your own RSA key pair locally.
 
 | **Env Variable**   | **Default Value** | **Description**                          |
 |---------------------|-------------------|------------------------------------------|
 | `RSA_PUBLIC_KEY`   | `""`              | The path to the SSH public key.          |
-| `RSA_PRIVATE_KEY`  | `""`              | The path to the SSH private key.         |
 | `JWT_CLAIM_ID`     | `id`              | The claim ID for JSON Web Tokens (JWT).  |
 
-**JWKS**
+#### **JWKS**
+Use this method to verify tokens from third-party identity providers via a remote JWKS endpoint.
 
 | **Env Variable**   | **Default Value** | **Description**                          |
 |---------------------|-------------------|------------------------------------------|
@@ -32,18 +38,10 @@ NOTE: JWT_CLIAM_ID
 | `JWKS_KID`         | `main`            | The key ID for the JWKS.                 |
 | `JWT_CLAIM_ID`     | `id`              | The claim ID for JSON Web Tokens (JWT).  |
 
-**PEM**
+#### **PEM**
+Use this method with local PEM-formatted key files (X.509).
 
 | **Env Variable**       | **Default Value** | **Description**                          |
 |-------------------------|-------------------|------------------------------------------|
-| `PEM_PRIVATE_FILENAME` | `key.pem`         | The filename for the private PEM key.    |
-| `PEM_PUBLIC_FILENAME`  | `key_pub.pem`     | The filename for the public PEM key.     |
+| `PEM_PUBLIC_FILENAME`  | `""`     | The filename for the public PEM key.     |
 | `JWT_CLAIM_ID`         | `id`              | The claim ID for JSON Web Tokens (JWT).  |
-
-## Configure File Processors (processors.cfg)
-
-Simple configuration
-
-```cfg
-default=mv {{.Source}} {{.Target}}
-```
