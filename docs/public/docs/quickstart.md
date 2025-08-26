@@ -68,7 +68,7 @@ curl --request POST http://localhost:8080/api/buckets \
 ```bash
 curl --request POST http://localhost:8080/api/buckets/my_bucket/files \
   --header 'Content-Type: multipart/form-data' \
-  --form file={path_to_your_file} \
+  --form file=@{path_to_your_file} \
   --form strict=false
 ```
 
