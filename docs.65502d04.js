@@ -1,0 +1,1 @@
+new class{initialize(o){for(let a of(window.$docsify=o,this.plugins))a.start()}addPlugin(o){this.plugins.push(o)}constructor(){this.plugins=[]}}().initialize({homepage:"home.md",coverpage:!1,basePath:"/docs",loadSidebar:!0,subMaxLevel:1,loadNavbar:!0,ga:"G-8Q40653GG4",themeColor:"#9c27b0",name:"BINVAULT.io",nameLink:"/",logo:"/logo.png",auto2top:!0,routerMode:"hash"});
